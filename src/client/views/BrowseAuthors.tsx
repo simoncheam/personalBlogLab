@@ -1,31 +1,31 @@
 import * as React from 'react';
 import {useState, useEffect} from 'react';
 import {useParams, useHistory, Link} from "react-router-dom";
-import { Blogs, BlogTagsJoined, Tags} from '../client_types';
+import { Blogs, BlogTagsJoined, Tags, Authors} from '../client_types';
 import Skeleton from 'react-loading-skeleton'
 
 
 //import client types
 
-const Browse =()=>{
+const BrowseAuthors =()=>{
 
     
     const [allblogs, setAllBlogs] = useState<BlogTagsJoined[] >([]); 
     const [loaded, setHasLoaded] = useState<boolean>(false);
-    const [selectedTagId, setSelectedTagId] = useState(null);
-    const [tag, setTag]= useState<Tags[]>([]);
+    const [selectedAuthorId, setSelectedAuthorId] = useState(null);
+    const [authors, setAuthors]= useState<Authors[]>([]);
 
     const {goBack} = useHistory();
     const hist = useHistory();
 
-    // USE EFFECT #1 - load all tags
+    // USE EFFECT #1 - load all authors
 
         useEffect(()=>{
            
-            fetch('/api/tags')
+            fetch('/api/authors')
             .then(res=>res.json())
             .then((t)=> {
-                setTag(t)  
+                setAuthors(t)  
             })
             .catch(e=>console.log(e))
         },[])
@@ -33,25 +33,25 @@ const Browse =()=>{
 
         useEffect(()=>{
 
-            if(!selectedTagId){return}
+            if(!selectedAuthorId){return}
 
-            fetch(`/api/blogs/browse/${selectedTagId}`)
+            fetch(`/api/blogs/browseauthors/${selectedAuthorId}`)
             .then(res=>res.json())
             .then(data=>{
                 setAllBlogs(data[0])
                 setHasLoaded(true);
             })
             .catch(e=>console.log(e))
-        },[selectedTagId])
+        },[selectedAuthorId])
 
         
         
-         // handleTagSelectUpdate - fires on tag select
-         const handleTagSelectUpdate = (e:React.ChangeEvent<HTMLSelectElement>) =>{
+         // handleAuthorSelectUpdate - fires on tag select
+         const handleAuthorSelectUpdate = (e:React.ChangeEvent<HTMLSelectElement>) =>{
 
             setHasLoaded(false); // set has loaded = false
             setAllBlogs([]) // clears allblogs state
-            setSelectedTagId(e.target.value) // set tagid >>> fires useEffect #2
+            setSelectedAuthorId(e.target.value) // set tagid >>> fires useEffect #2
         };
 
    
@@ -64,19 +64,19 @@ return(
 
 
     <div className="row justify-content-center">
-        <h1 className="display-3 m-3 text-center"> Browse Blogs By Tag... </h1>
+        <h1 className="display-3 m-3 text-center"> Browse Blogs by Author... </h1>
 
        
-          <label className="row" >All Topics:</label>
+          <label className="row" >All Bloggers:</label>
 
 
-            <select onChange={handleTagSelectUpdate} className="form-control m-2">
+            <select onChange={handleAuthorSelectUpdate} className="form-control m-2">
                 
-                        <option value={0}> Select a tag to explore related topics</option>
+                        <option value={0}> Select an author to see their work</option>
 
-                        {tag.map(t=>(
-                            <option key={`author-option-${t.id}`} value={t.id}>
-                                {t.name}
+                        {authors.map(author=>(
+                            <option key={`author-option-${author.id}`} value={author.id}>
+                                {author.name}
                             </option>
                         ))}
             </select>
@@ -89,7 +89,7 @@ return(
        </div>
         {/* Add to notes */}
        {
-           selectedTagId && !allblogs.length && (!loaded ? <Skeleton  /> : <h1>No blogs found with that tag</h1>)
+           selectedAuthorId && !allblogs.length && (!loaded ? <Skeleton  /> : <h1>No blogs found, the author needs more coffee ☕️ </h1>)
 
        }
 
@@ -118,8 +118,8 @@ return(
     <div onClick={goBack} className="btn m-2 btn-danger">
         Go Back?
     </div>
-    <Link to ={`/blogs/browseauthors/`} className="btn m-2 btn-primary">
-        Want to Browse by Author? Click Here
+    <Link to ={`/blogs/browse/`} className="btn m-2 btn-primary">
+        Want to Browse by Subject? Click Here
     </Link>
 
 
@@ -129,4 +129,4 @@ return(
 );
 }
 
-export default Browse;
+export default BrowseAuthors;

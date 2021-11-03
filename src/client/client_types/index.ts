@@ -33,10 +33,14 @@ export interface BlogTags {
 }
 
 export interface BlogTagsJoined {
-    tag_id: number;
-    tag_name: string;
-    blog_id: number;
-    blogtag_id: number;
+    tag_id?: number;
+    tag_name?: string;
+    blog_id?: number;
+    title: string;
+    content: string,
+    blog_created?: string;
+    a_name?: string;
+    a_email?: string;
     _created?: string;
 }
 

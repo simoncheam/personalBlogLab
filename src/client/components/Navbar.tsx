@@ -9,7 +9,7 @@ const Navbar = () => {
             <Link type="button" className="m-2 btn btn-outline-primary" to="/">
                 Home
             </Link>
-            <Link type="button" className="m-2 btn btn-outline-primary" to="/browse">
+            <Link type="button" className="m-2 btn btn-outline-primary" to="/blogs/browse">
                 Browse
             </Link>
             <Link type="button" className="m-2 btn btn-outline-primary" to="/create">

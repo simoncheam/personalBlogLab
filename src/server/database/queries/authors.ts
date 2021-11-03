@@ -1,9 +1,9 @@
-import {TalkToMySQL} from "../index";
-import {Authors} from "../../types";
+import { TalkToMySQL } from "../index";
+import { Authors } from "../../types";
 
-const get_all = () => TalkToMySQL<Authors[]>("SELECT * FROM Users");
+const get_all = () => TalkToMySQL<Authors[]>("SELECT * FROM Authors");
 
-const get_one_by_id = (id:number) => TalkToMySQL<Authors[]>("SELECT * FROM Authors WHERE id =?", [id]);
+const get_one_by_id = (id: number) => TalkToMySQL<Authors[]>("SELECT * FROM Authors WHERE id =?", [id]);
 
 const create = (new_author: Authors) => TalkToMySQL('INSERT INTO Authors SET ?', [new_author]);
 
@@ -15,7 +15,7 @@ export default {
     get_all,
     get_one_by_id,
     create,
-    update, 
+    update,
     destroy
 
 };

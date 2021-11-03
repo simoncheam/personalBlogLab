@@ -4,10 +4,14 @@ import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import Blogs from './views/Blogs';
 import Create from './views/Create';
 import Browse from './views/Browse';
-import Authors from './views/Authors';
 import NotFound from './views/NotFound';
 import Navbar from './components/Navbar';
 import CreateAuthor from './views/CreateAuthor';
+import BlogDetail from './views/BlogDetail';
+import Edit from './views/Edit';
+import AuthorOverview from './views/AuthorOverview';
+import CreateTag from './views/CreateTag';
+import BrowseAuthors from './views/BrowseAuthors';
 
 const App = () => {
 	
@@ -22,34 +26,69 @@ const App = () => {
 		<div className="container">
 			<Switch>
 
+				
+				{/* BrowseAuthors */}
+				<Route exact path="/blogs/browseauthors">
+						<BrowseAuthors/>
+				</Route>
+				
+				{/* Browse */}
+				<Route exact path="/blogs/browse">
+						<Browse/>
+				</Route>
 
+
+
+
+				{/* Browse */}
+				{/* <Route exact path="/blogs/browse/:tagid">
+						<Browse/>
+				</Route> */}
+
+
+				{/* Blog Detail */}
+				<Route exact path="/blogs/:blog_id">
+						<BlogDetail/>
+				</Route>
 
 				{/* Blogs */}
 				<Route exact path="/">
 						<Blogs/>
 				</Route>
-				
-				
-				{/* Create */}
-				<Route exact path="/create">
-						<Create/>
-				</Route>
+
+
 
 				{/* New Author */}
 				<Route exact path="/createAuthor">
 						<CreateAuthor/>
 				</Route>
-				
-				
-				{/* Browse */}
-				<Route exact path="/browse">
-						<Browse/>
+
+				{/* Create Tag*/}
+				<Route exact path="/createTag">
+						<CreateTag/>
 				</Route>
+				
+				{/* Create Blog*/}
+				<Route exact path="/create">
+						<Create/>
+				</Route>
+
+				{/* Edit */}
+				<Route exact path="/blogs/:blog_id/edit">
+						<Edit/>
+				</Route>
+
+
+
+
+
+				
+				
 				
 				
 				{/* Authors */}
 				<Route exact path="/authors">
-						<Authors/>
+						<AuthorOverview/>
 				</Route>
 				
 				

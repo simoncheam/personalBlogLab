@@ -1,5 +1,12 @@
-$theme-colors: (
-    'primary': #0091ea //Covalence Blue!  :D
-);
+// $theme-colors: (
+//     'primary': #0091ea //Covalence Blue!  :D
+//     'danger': #dc3545
+//     'warning':#ffc107
+//     'success': #28a745
+//     'secondary': #6c757d
+
+
+// );
 
 @import '../../../node_modules/bootstrap/scss/bootstrap.scss';
+@import '../../../node_modules/react-loading-skeleton/dist/skeleton.css'
