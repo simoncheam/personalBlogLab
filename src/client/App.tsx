@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import Blogs from './views/Blogs';
 import Create from './views/Create';
@@ -12,100 +12,117 @@ import Edit from './views/Edit';
 import AuthorOverview from './views/AuthorOverview';
 import CreateTag from './views/CreateTag';
 import BrowseAuthors from './views/BrowseAuthors';
+import Donate from './views/Donate';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+
+const stripe = loadStripe('pk_test_51JrmRQKRuAnoTcjnMIgGXWelfVNUongEu9Ja2mkoFoIJseO0x7AsD9PqIkk3IjnDrjj7z67fKPzrhlBqsANseyi700PDjNRoox');
 
 const App = () => {
-	
+
 
 	return (
-		
+
 		<BrowserRouter>
 			{/* Navbar */}
-			<Navbar/>
+			<Navbar />
 
 
-		<div className="container">
-			<Switch>
+			<div className="container">
+				<Switch>
 
-				
-				{/* BrowseAuthors */}
-				<Route exact path="/blogs/browseauthors">
-						<BrowseAuthors/>
-				</Route>
-				
-				{/* Browse */}
-				<Route exact path="/blogs/browse">
-						<Browse/>
+					
+
+
+				<Route exact path="/donate">
+						<Elements stripe={stripe}>
+							<Donate />
+						</Elements>;
 				</Route>
 
 
 
 
-				{/* Browse */}
-				{/* <Route exact path="/blogs/browse/:tagid">
+
+					{/* BrowseAuthors */}
+					<Route exact path="/blogs/browseauthors">
+						<BrowseAuthors />
+					</Route>
+
+					{/* Browse */}
+					<Route exact path="/blogs/browse">
+						<Browse />
+					</Route>
+
+
+
+
+					{/* Browse */}
+					{/* <Route exact path="/blogs/browse/:tagid">
 						<Browse/>
 				</Route> */}
 
 
-				{/* Blog Detail */}
-				<Route exact path="/blogs/:blog_id">
-						<BlogDetail/>
-				</Route>
-
-				{/* Blogs */}
-				<Route exact path="/">
-						<Blogs/>
-				</Route>
-
-
-
-				{/* New Author */}
-				<Route exact path="/createAuthor">
-						<CreateAuthor/>
-				</Route>
-
-				{/* Create Tag*/}
-				<Route exact path="/createTag">
-						<CreateTag/>
-				</Route>
-				
-				{/* Create Blog*/}
-				<Route exact path="/create">
-						<Create/>
-				</Route>
-
-				{/* Edit */}
-				<Route exact path="/blogs/:blog_id/edit">
-						<Edit/>
-				</Route>
-
-
-
-
-
-				
-				
-				
-				
-				{/* Authors */}
-				<Route exact path="/authors">
-						<AuthorOverview/>
-				</Route>
-				
-				
-				{/* NotFound */}
-
-					<Route  path = "*">
-							<NotFound/>
+					{/* Blog Detail */}
+					<Route exact path="/blogs/:blog_id">
+						<BlogDetail />
 					</Route>
-									
 
-			</Switch>
+					{/* Blogs */}
+					<Route exact path="/">
+						<Blogs />
+					</Route>
 
-		</div>
-			
-		
-		
-		
+
+
+					{/* New Author */}
+					<Route exact path="/createAuthor">
+						<CreateAuthor />
+					</Route>
+
+					{/* Create Tag*/}
+					<Route exact path="/createTag">
+						<CreateTag />
+					</Route>
+
+					{/* Create Blog*/}
+					<Route exact path="/create">
+						<Create />
+					</Route>
+
+					{/* Edit */}
+					<Route exact path="/blogs/:blog_id/edit">
+						<Edit />
+					</Route>
+
+
+
+
+
+
+
+
+
+					{/* Authors */}
+					<Route exact path="/authors">
+						<AuthorOverview />
+					</Route>
+
+
+					{/* NotFound */}
+
+					<Route path="*">
+						<NotFound />
+					</Route>
+
+
+				</Switch>
+
+			</div>
+
+
+
+
 		</BrowserRouter>
 
 

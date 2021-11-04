@@ -8,3 +8,9 @@ export const database_config = {
 	user: process.env.DB_USER,
 	password: process.env.DB_PASSWORD
 }; 
+
+export default {
+	stripe: {
+		secret: process.env.STRIPE_API_KEY
+	}
+}

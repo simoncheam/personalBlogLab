@@ -21,6 +21,9 @@ const Navbar = () => {
             <Link type="button" className="m-2 btn btn-outline-primary" to="/authors">
                 Authors
             </Link>
+            <Link type="button" className="m-2 btn btn-outline-primary" to="/donate">
+                Donate
+            </Link>
 
 
 
