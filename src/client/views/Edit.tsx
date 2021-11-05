@@ -75,7 +75,7 @@ const Edit = () => {
     useEffect(() => {
         fetch(`/api/blogs/${blog_id}`)
             .then(res => res.json())
-            .then((data: BlogTagsJoined) => {
+            .then(data => {  //had to remove:(data: BlogTagsJoined) due to error
                 data = data[0];
                 setBlog(data)
 

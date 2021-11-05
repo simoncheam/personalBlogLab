@@ -17,7 +17,7 @@ const BlogDetail = () => {
     useEffect(() => {
         fetch(`/api/blogs/${blog_id}`)
             .then(res => res.json())
-            .then((data: BlogTagsJoined) => {
+            .then(data => { //removed: (data: BlogTagsJoined)
 
                 data = data[0];  // destructuring object from array (removes meta data)
                 setBlogTag(data.tag_name)

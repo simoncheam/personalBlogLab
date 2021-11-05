@@ -4,7 +4,11 @@ import authors_router from './authors';
 import tags_router from './tags';
 import donate_router from './donate';
 
+import mailgun_Router from './apimailgun';
+
 const router = express.Router();
+
+router.use('/apimailgun', mailgun_Router)
 
 router.use('/blogs', blogs_router);
 router.use('/authors', authors_router);
