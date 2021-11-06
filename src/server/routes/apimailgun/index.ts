@@ -1,5 +1,5 @@
 import * as express from 'express';
-import contactRouter from './contact'
+import contactRouter from './contact';
 
 const router = express.Router();
 
