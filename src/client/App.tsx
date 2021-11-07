@@ -13,8 +13,10 @@ import AuthorOverview from './views/AuthorOverview';
 import CreateTag from './views/CreateTag';
 import BrowseAuthors from './views/BrowseAuthors';
 import Donate from './views/Donate';
+import OptIn from './views/OptIn';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
+import Welcome from './views/Welcome';
 
 const stripe = loadStripe('pk_test_51JrmRQKRuAnoTcjnMIgGXWelfVNUongEu9Ja2mkoFoIJseO0x7AsD9PqIkk3IjnDrjj7z67fKPzrhlBqsANseyi700PDjNRoox');
 
@@ -31,18 +33,16 @@ const App = () => {
 			<div className="container">
 				<Switch>
 
-					
-
-
-				<Route exact path="/donate">
+					<Route exact path="/donate">
 						<Elements stripe={stripe}>
 							<Donate />
 						</Elements>;
-				</Route>
+					</Route>
 
-
-
-
+					{/* BrowseAuthors */}
+					<Route exact path="/vip">
+						<OptIn />
+					</Route>
 
 					{/* BrowseAuthors */}
 					<Route exact path="/blogs/browseauthors">
@@ -54,15 +54,6 @@ const App = () => {
 						<Browse />
 					</Route>
 
-
-
-
-					{/* Browse */}
-					{/* <Route exact path="/blogs/browse/:tagid">
-						<Browse/>
-				</Route> */}
-
-
 					{/* Blog Detail */}
 					<Route exact path="/blogs/:blog_id">
 						<BlogDetail />
@@ -73,7 +64,10 @@ const App = () => {
 						<Blogs />
 					</Route>
 
-
+					{/* Welcome */}
+					<Route exact path="/welcome">
+						<Welcome />
+					</Route>
 
 					{/* New Author */}
 					<Route exact path="/createAuthor">
@@ -95,37 +89,21 @@ const App = () => {
 						<Edit />
 					</Route>
 
-
-
-
-
-
-
-
-
 					{/* Authors */}
 					<Route exact path="/authors">
 						<AuthorOverview />
 					</Route>
 
-
 					{/* NotFound */}
-
 					<Route path="*">
 						<NotFound />
 					</Route>
 
 
 				</Switch>
-
 			</div>
 
-
-
-
 		</BrowserRouter>
-
-
 
 	);
 };
