@@ -1,6 +1,6 @@
 import * as express from 'express';
 import Stripe from 'stripe';
-import config from '../config' // connects to config folder with secret key
+import config from '../../config' // connects to config folder with secret key
 
 // connect stripe with our secret key
 const stripe = new Stripe(config.stripe.secret, { apiVersion: '2020-08-27' });

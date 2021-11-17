@@ -1,3 +1,20 @@
+import { Request } from 'express';
+import { JwtPayload } from 'jsonwebtoken';
+import {AuthorsTable} from '../database/models';
+
+//UserTable model?
+
+
+export interface ReqUser extends Request {
+    user?: AuthorsTable | JwtPayload;
+}
+
+export interface Payload extends AuthorsTable {
+    userid?: number;
+    role?:number;
+}
+
+
 export interface MySQL_Default_Response {
     insertId:number;  
     affectedRows: number;
@@ -6,8 +23,9 @@ export interface MySQL_Default_Response {
 
 export interface Authors {
     id?: number;
-    name: string;
+    name?: string;
     email?: string;
+    password?: string;
     _created?: string 
 }
 

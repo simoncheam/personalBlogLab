@@ -9,6 +9,15 @@ export const database_config = {
 	password: process.env.DB_PASSWORD
 }; 
 
+export const jwt_config = {   
+	
+	secret:process.env.JWT_SECRET,
+	signature:process.env.JWT_SIGNATURE,
+	expiration:process.env.JWT_EXPIRATION
+}; 
+
+
+
 export default {
 	stripe: {
 		secret: process.env.STRIPE_API_KEY
@@ -18,7 +27,9 @@ export default {
 		domain: process.env.MAILGUN_DOMAIN,
 		toEmail: process.env.MAILGUN_TO_EMAIL,
 		pubKey: process.env.MAILGUN_PUB_KEY
-	}
+	},
+	jwt_config, 
+	database_config
 
 };
 

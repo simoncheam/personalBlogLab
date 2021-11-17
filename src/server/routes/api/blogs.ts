@@ -1,7 +1,7 @@
-import blogz from '../database/queries/blogs';
-import blogtagz from '../database/queries/blogtags';
+import blogz from '../../database/queries/blogs';
+import blogtagz from '../../database/queries/blogtags';
 import * as express from 'express';
-import { Blogs, Authors, BlogTagsJoined, BlogTags } from '../types'
+import { Blogs, Authors, BlogTagsJoined, BlogTags } from '../../types'
 
 
 const router = express.Router();

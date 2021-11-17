@@ -1,6 +1,6 @@
-import authorz from '../database/queries/authors';
+import authorz from '../../database/queries/authors';
 import * as express from 'express';
-import { Authors } from '../types'
+import { Authors } from '../../types'
 
 
 const router = express.Router();

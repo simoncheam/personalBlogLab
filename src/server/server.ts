@@ -1,12 +1,22 @@
 import * as express from 'express';
-import apiRouter from './routes';
+import * as cors from 'cors';
+import routes from './routes';
 import * as path from 'path';
-
+import {configurePassport} from '../server/middlewares/passport-strats.mw'
+import * as passport from 'passport';
 const app = express();
 
+
+
+configurePassport(app); // !import mw function - TS side effect
+
+app.use(passport.initialize());
+
+app.use(cors());
 app.use(express.json());
+
 app.use(express.static('public'));
-app.use('/api', apiRouter);
+app.use(routes);  /// !!! changes to routes
 
 app.get('*', (req,res) =>{ res.sendFile(path.join(__dirname, '../public/index.html'))
 

@@ -1,6 +1,6 @@
-import tagz from '../database/queries/tags';
+import tagz from '../../database/queries/tags';
 import * as express from 'express';
-import { Tags } from '../types';
+import { Tags } from '../../types';
 
 const router = express.Router();
 
