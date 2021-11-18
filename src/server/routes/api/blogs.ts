@@ -2,6 +2,7 @@ import blogz from '../../database/queries/blogs';
 import blogtagz from '../../database/queries/blogtags';
 import * as express from 'express';
 import { Blogs, Authors, BlogTagsJoined, BlogTags } from '../../types'
+import {tokenCheck} from '../../middlewares/tokenCheck.mw'
 
 
 const router = express.Router();
@@ -87,7 +88,7 @@ router.get('/:id', async (req, res) => {
 
 // Create
 
-router.post('/', async (req, res) => {
+router.post('/', tokenCheck, async (req, res) => {
 
     
     const { tagid, title, content, authorid } = req.body;
@@ -118,7 +119,7 @@ router.post('/', async (req, res) => {
 
 // update blog
 
-router.put('/:id', async (req, res) => {
+router.put('/:id',tokenCheck, async (req, res) => {
 
     const { title, content, authorid, tagid } = req.body; 
 
@@ -146,7 +147,7 @@ router.put('/:id', async (req, res) => {
 
 // delete
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', tokenCheck, async (req, res) => {
 
     const id = Number(req.params.id);
 

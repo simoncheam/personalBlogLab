@@ -27,11 +27,11 @@ router.post('/', async (req, res) =>{
             {expiresIn: jwt_config.expiration}
         );
 
-        res.json(token);
+        res.status(200).json({message: "successful registration", token });
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Fuck me running!'})
+        res.status(500).json({ message: 'Fuck me running!', error})
         
     }
 })

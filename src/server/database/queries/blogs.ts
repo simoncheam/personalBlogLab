@@ -1,6 +1,7 @@
 import {TalkToMySQL} from "../index";
 import {Blogs, BlogTags, BlogTagsJoined} from "../../types";
 
+
 // const get_all = () => TalkToMySQL<BlogTagsJoined[]>
 // (`CALL spGetAllBlogsJoined()`);
 

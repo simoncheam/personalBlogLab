@@ -1,8 +1,14 @@
 import tagz from '../../database/queries/tags';
 import * as express from 'express';
 import { Tags } from '../../types';
+import {tokenCheck} from '../../middlewares/tokenCheck.mw'
 
 const router = express.Router();
+
+router.route('*')
+.post(tokenCheck)
+.put(tokenCheck)
+.delete(tokenCheck)
 
 
 router.get('/', async (req, res) => {

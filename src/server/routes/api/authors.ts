@@ -1,9 +1,15 @@
 import authorz from '../../database/queries/authors';
 import * as express from 'express';
 import { Authors } from '../../types'
+import {tokenCheck} from '../../middlewares/tokenCheck.mw'
 
 
 const router = express.Router();
+
+router.route('*')
+.post(tokenCheck)
+.put(tokenCheck)
+.delete(tokenCheck)
 
 
 //get all
