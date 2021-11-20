@@ -1,15 +1,30 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { useParams, useHistory, Link } from "react-router-dom";
+import { Routes, Route, useParams, useNavigate } from "react-router-dom";
 import { database_config } from '../../server/config';
 import { Blogs, Authors, Tags, BlogTags, BlogTagsJoined } from '../client_types'
 
 
-const Edit = () => {
+// function App() {
+//     return (
+//       <Routes>
+//         <Route
+//           path="blogs/:blog_id"
+//           element={<Edit />}
+//         />
+//       </Routes>
+//     );
+//   }
 
-    const { goBack } = useHistory();
-    const hist = useHistory();
-    const { blog_id } = useParams<{ blog_id: string }>();
+
+const Edit = () => {
+    let params = useParams();
+    let navigate = useNavigate();
+
+
+    //const { blog_id } = useParams<{ blog_id: string }>(); //old v5
+    const  blog_id  = params.blog_id; //useParams<{ blog_id: string }>(); //v6
+
 
     //State - Blog
     const [blog, setBlog] = useState<BlogTagsJoined>();
@@ -26,6 +41,10 @@ const Edit = () => {
     const [selectedTagId, setSelectedTagId] = useState(0);
 
 
+
+    const TOKEN_KEY = 'token';
+    const token = localStorage.getItem(TOKEN_KEY);
+
     // const handleUpdate
     const handleUpdate = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
@@ -36,7 +55,8 @@ const Edit = () => {
         fetch(`/api/blogs/${blog_id}`, {
             method: 'PUT',
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify({
                 title: blog_title,
@@ -45,9 +65,21 @@ const Edit = () => {
                 tagid: selectedTagId
             })
         })
-            .then(res => res.json())
+            .then(res => {
+
+                if (!res.ok) {
+                    alert('BAD BAD BAD! not authorized to edit!')
+                    
+                    navigate(`/login`) 
+                    return
+                }
+                console.log('EDIT Res is good!');
+                return res.json()
+            }
+            
+            )
             .then(data => {
-                hist.push(`/blogs/${blog_id}`)
+                navigate(`/blogs/${blog_id}`)
                 console.log(data);
             })
             .catch(e => console.log(e))
@@ -63,10 +95,13 @@ const Edit = () => {
         }
         fetch(`/api/blogs/${blog_id}`, {
             method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
         })
             .then(res => res.json())
             .then(() => {
-                hist.push(`/`)
+                navigate(`/`)
             })
             .catch(e => console.log(e))
     }
@@ -178,7 +213,7 @@ const Edit = () => {
 
                     {/* Buttons */}
                     <div className="m-2">
-                        <div onClick={goBack} className="btn mx-2 btn-primary">Go Back?</div>
+                        <div onClick={() => navigate(-1)} className="btn mx-2 btn-primary">Go Back?</div>
                         <button onClick={handleDelete} className="btn mx-2 btn-danger">Delete!</button>
                         <button onClick={handleUpdate} className="btn btn-Success">Save Updates!</button>
                     </div>

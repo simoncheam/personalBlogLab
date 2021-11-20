@@ -1,17 +1,20 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { useParams, useHistory, Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { BlogTagsJoined } from '../client_types'
 
 //import client types
 
 const BlogDetail = () => {
+    let params = useParams();
+    let navigate = useNavigate();
+    const  blog_id  = params.blog_id;
 
-    const { blog_id } = useParams<{ blog_id: string }>();
+
+    //const { blog_id } = useParams<{ blog_id: string }>();
     const [blog, setBlog] = useState<BlogTagsJoined>();
     const [blog_tag, setBlogTag] = useState<string>();
     
-    const { goBack } = useHistory();
     
     //useEffect
     useEffect(() => {
@@ -62,7 +65,7 @@ const BlogDetail = () => {
                         <footer className=" m-2 blockquote-footer"> {blog.blog_created} </footer>
 
                         <div>
-                            <div onClick={goBack} className="btn mx-2 btn-primary">
+                            <div onClick={() => navigate(-1)} className="btn mx-2 btn-primary">
                                 Go Back?
                             </div>
                             <Link to={`/blogs/${blog_id}/edit`} className="btn mx-2 btn-warning">

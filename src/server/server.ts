@@ -14,7 +14,7 @@ configurePassport(app); // !import mw function - TS side effect
 
 app.use(passport.initialize());
 
-app.use(cors());
+//app.use(cors());
 app.use(express.json());
 
 app.get('/status', (req,res)=> res.sendStatus(200));

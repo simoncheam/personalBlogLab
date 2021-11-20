@@ -44,7 +44,7 @@
     "react-dom": "^17.0.2",
     "react-loading-skeleton": "^3.0.1",
     "react-router": "^5.2.1",
-    "react-router-dom": "^5.3.0",
+    "react-router-dom": "^6.0.2",
     "sass": "^1.41.1",
     "sass-loader": "^12.1.0",
     "stripe": "^8.186.0",

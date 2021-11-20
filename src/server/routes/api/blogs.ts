@@ -92,14 +92,17 @@ router.post('/', tokenCheck, async (req, res) => {
 
     
     const { tagid, title, content, authorid } = req.body;
-    console.log('tagid:');
-    console.log(tagid);
+    
+    //const {token} = req.headers.authorization
+    console.log('Router -Post TOKEN CHECK HERE');
+  
 
     //input validation
     if (!content || !title || !tagid) {  //    "authorid": 1,
         return res.status(400).json({ message: "Fill out everything!" })
     }
 
+    
     try {
 
         const blogResults = await blogz.create({ title, content, authorid });
@@ -152,6 +155,7 @@ router.delete('/:id', tokenCheck, async (req, res) => {
     const id = Number(req.params.id);
 
     const { tagid } = req.body;
+    console.log('api/blogs/delete test!');
 
 
     try {

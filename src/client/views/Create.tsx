@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { useParams, useHistory, Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { Blogs, Authors, Tags } from '../client_types'
 
 const Create = () => {
+    let navigate = useNavigate();
 
-    const { goBack } = useHistory();
-    const hist = useHistory();
+
+   
 
     //State - Blog
     const [blogs, setBlogs] = useState<Blogs[]>([]);
@@ -51,6 +52,10 @@ const Create = () => {
 
             })
             .catch(e => console.log(e))
+
+        // !! make fetch to api route to grab token info
+
+
     }, []);
 
 
@@ -71,17 +76,24 @@ const Create = () => {
     }
 
     // const handleSubmitButton
+    const TOKEN_KEY = 'token';
+    const token = localStorage.getItem(TOKEN_KEY);
+
     const handleSubmitButton = (newblog: React.MouseEvent<HTMLButtonElement>) => {
         newblog.preventDefault();
 
         //input val
         if (!blog_content || !blog_title || !selectedAuthorId || !selectedTagId) return alert('🤬 Fill out the god damn fields!')
 
+        //!!!------------- ADD USER VALIDATION CHECK
 
         fetch("/api/blogs", {
             method: "POST",
             headers: {
-                "CONTENT-TYPE": "application/json"
+                "CONTENT-TYPE": "application/json",
+                Authorization: `Bearer ${token}`
+
+                // Authorization header with token applied
             },
             body: JSON.stringify({
                 authorid: selectedAuthorId,
@@ -90,11 +102,23 @@ const Create = () => {
                 tagid: selectedTagId
             })
         })
-            .then(res => res.json())
-            .then(data => {
-                hist.push(`/`)
-                console.log(data);
+            .then(res => {
 
+                if (!res.ok) {
+                    alert('BAD BAD BAD! not authorized!')
+                    console.log('!res.ok nav to login bitch!'); 
+                    navigate(`/login`) 
+
+                    return
+                }
+                console.log('Res is good!');
+                return res.json();
+            }
+
+            )
+            .then(data => { //happens if authorized
+                navigate(`/`)
+                console.log(data);
             })
             .catch(e => console.log(e))
     }
@@ -114,7 +138,7 @@ const Create = () => {
                             <span className="input-group-text" id="basic-addon1">@</span>
                         </div>
 
-                        <option value={0}> Select Your Name (honor system lol)</option>
+                        <option value={0}> Select Your Name </option>
 
                         {authors.map(author => (
                             <option key={`author-option-${author.id}`} value={author.id}>
@@ -167,7 +191,7 @@ const Create = () => {
 
                     {/* ----------- CTA Buttons ----------- */}
 
-                    <div onClick={goBack} className="btn m-2 btn-primary">
+                    <div onClick={() => navigate(-1)} className="btn m-2 btn-primary">
                         Go Back?
                     </div>
 

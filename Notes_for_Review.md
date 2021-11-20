@@ -1,6 +1,5 @@
 # For Review: 
-- review useparams alternative with drop down?
-- react select implementation
+
 
 
 # REFERENCE MySQL Stored Procedures and Tables:

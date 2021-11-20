@@ -9,13 +9,14 @@ const AuthorOverview = () => {
 
     const { goBack } = useHistory();
     const hist = useHistory();
+    const { user_id } = useParams<{ user_id: string }>();
 
     // set author state
     const [authors, setAuthors] = useState<Authors[]>([]);
 
     //useEffect
     useEffect(() => {
-        fetch('/api/authors')
+        fetch(`/api/authors/${user_id}`)
             .then(res => res.json())
             .then(a => setAuthors(a))
             .catch(e => console.log(e))
@@ -26,36 +27,13 @@ const AuthorOverview = () => {
         <>
             <div className="row mt-5 justify-content-center">
                 <div className="col-md-8">
-                    <h1 className="display-3 m-3 text-center">🏆 Welcome Members, click your name to view your private profile! ✍️</h1>
+                    <h1 className="display-3 m-3 text-center">🏆 Welcome, USERNAME ✍️</h1>
                     <div className=" row justify-content-center">
             <Link to={`/createAuthor`} className=" btn m-2 btn-success ">
                 Got Something Interesting To Say? Click Here To Share Your Ideas Today!
             </Link>
                     </div>
-                    <ul className="justify-content-center list-group m-5">
-                        {authors.reverse().map(author => (
-                            <Link to={`/authors/${author.id}`} className="list-group-item" key={`author-${author.id}`}>
-
-                                <div className="card shadow-lg m-2">
-
-                                    {/* HEADER */}
-                                    <div className="card-header">
-                                        Name: {author?.name}
-                                    </div>
-
-                                    {/* BODY   PRIVATE INFO*/}
-                                    {/* <div className="card-body">
-                                        <p> 📧 <em>{author?.email}</em></p>
-                                    </div> */}
-
-                                    <div className="card-footer">
-                                        <p> Blogging Since: <em>{author?._created}</em></p>
-                                    </div>
-                                </div>
-                            </Link>
-                        ))}
-
-                    </ul>
+                   
                     <div className=" row justify-content-center">
                         <Link to={`/createAuthor`} className=" btn m-2 btn-success ">
                             Click Here To Get Started Today!

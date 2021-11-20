@@ -7,13 +7,14 @@ import { Blogs, Authors, Tags } from '../client_types'
 
 
 
-const CreateAuthor = () => {
+const Register = () => {
 
     const hist = useHistory();
 
     // set author state
     const [author_name, setAuthor_name] = useState("");
     const [author_email, setAuthor_email] = useState("");
+    const [author_password, setAuthor_password] = useState("");
 
 
     const handleSubmitButton = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -22,19 +23,23 @@ const CreateAuthor = () => {
         if (!author_name || !author_email) return alert('🤬 Fill out the god damn fields! Not a good start to your blogging career🤦🏻‍♂️')
 
 
-        fetch("/api/authors", {
+        fetch("/auth/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({ 
                 name: author_name, 
-                email: author_email 
+                email: author_email,
+                password: author_password 
             })
         })
             .then(res => res.json())
             .then(data => {
+                localStorage.setItem('token', data.token)
                 hist.push(`/authors`)
+                console.log(data);
+
 
 
             })
@@ -49,7 +54,7 @@ const CreateAuthor = () => {
             <div className="row m-5 justify-content-center">
 
                 <h1 className="display-3 m-3 text-center">👋 Become An Author!📝 </h1>
-                <p className="display-6 m-3 text-center">Create Your Blog Account Today👇</p>
+                <p className="display-6 m-3 text-center">Join Today👇</p>
 
                 <div className="row mt-5 justify-content-center">
 
@@ -59,7 +64,11 @@ const CreateAuthor = () => {
 
                         <input type="text" className="form-control m-2" placeholder="email" value={author_email} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAuthor_email(e.target.value)} />
 
-                        <p> We can't promise to keep your information safe(lol)😜</p>
+                        <input type="password" className="form-control m-2" placeholder="password" value={author_password} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAuthor_password(e.target.value)} />
+
+
+
+                        <p> We keep your info safe with our super cool Covalence Authentication Technology(CAT)😽</p>
 
                         <button onClick={handleSubmitButton} className="btn btn-primary m-2 shadow ">Click to Create Account!</button>
                     </div>
@@ -69,4 +78,4 @@ const CreateAuthor = () => {
     );
 }
 
-export default CreateAuthor;
+export default Register;

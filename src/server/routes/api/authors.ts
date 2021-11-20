@@ -1,7 +1,8 @@
 import authorz from '../../database/queries/authors';
 import * as express from 'express';
 import { Authors } from '../../types'
-import {tokenCheck} from '../../middlewares/tokenCheck.mw'
+import {tokenCheck} from '../../middlewares/tokenCheck.mw';
+import {ReqUser} from '../../types'
 
 
 const router = express.Router();
@@ -9,10 +10,13 @@ const router = express.Router();
 router.route('*')
 .post(tokenCheck)
 .put(tokenCheck)
-.delete(tokenCheck)
+//.delete(tokenCheck)
+
+// Need to add useEffect, check for token
 
 
-//get all
+
+// !!! Add token check here and redirect to login if not authorized
 
 router.get('/', async (req, res) => {
 
@@ -26,11 +30,15 @@ router.get('/', async (req, res) => {
 
 })
 
-//get one by id
+//get one by id............
+//Add token check to allow only author to see profile
 
-router.get('/:id', async (req, res) => {
+router.get('/:user_id',tokenCheck, async (req: ReqUser, res) => {
 
-    const id = req.params.id;;
+    const id = req.params.id;
+    const {name} = req.user.name;
+
+
 
     try {
 
@@ -39,7 +47,7 @@ router.get('/:id', async (req, res) => {
         if (!one_author) {
             res.status(404).json({ message: "User not found!" })
         } else {
-            res.status(200).json(one_author);
+            res.status(200).json({message: `Welcome ${name}! `, one_author});
         }
 
     } catch (error) {

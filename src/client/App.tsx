@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Blogs from './views/Blogs';
 import Create from './views/Create';
 import Browse from './views/Browse';
 import NotFound from './views/NotFound';
 import Navbar from './components/Navbar';
-import CreateAuthor from './views/CreateAuthor';
+import Register from './views/Register';
 import BlogDetail from './views/BlogDetail';
 import Edit from './views/Edit';
 import AuthorOverview from './views/AuthorOverview';
@@ -17,6 +17,10 @@ import OptIn from './views/OptIn';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import Welcome from './views/Welcome';
+import LoginHere from './views/LoginHere';
+import NotAuthorized from './views/NotAuthorized';
+import AuthorDetail from './views/AuthorDetail';
+
 
 const stripe = loadStripe('pk_test_51JrmRQKRuAnoTcjnMIgGXWelfVNUongEu9Ja2mkoFoIJseO0x7AsD9PqIkk3IjnDrjj7z67fKPzrhlBqsANseyi700PDjNRoox');
 
@@ -31,76 +35,95 @@ const App = () => {
 
 
 			<div className="container">
-				<Switch>
-
-					<Route exact path="/donate">
+				<Routes>
+					
+					{/* ! strips might be messed up from react v6 update */}
+					<Route path="/donate" element={
 						<Elements stripe={stripe}>
 							<Donate />
-						</Elements>;
+						</Elements>
+					} >
+						
 					</Route>
 
 					{/* BrowseAuthors */}
-					<Route exact path="/vip">
-						<OptIn />
+					<Route path="/vip" element={<OptIn />}>
+
+					</Route>
+
+					{/* login */}
+					<Route path="/login" element={<LoginHere />}>
+
+
 					</Route>
 
 					{/* BrowseAuthors */}
-					<Route exact path="/blogs/browseauthors">
-						<BrowseAuthors />
+					<Route path="/blogs/browseauthors" element={<BrowseAuthors />}>
+
 					</Route>
 
 					{/* Browse */}
-					<Route exact path="/blogs/browse">
-						<Browse />
+					<Route path="/blogs/browse" element={<Browse />}>
+
 					</Route>
 
 					{/* Blog Detail */}
-					<Route exact path="/blogs/:blog_id">
-						<BlogDetail />
+					<Route path="/blogs/:blog_id" element={<BlogDetail />}>
+
 					</Route>
 
 					{/* Blogs */}
-					<Route exact path="/">
-						<Blogs />
+					<Route path="/" element={<Blogs />}>
+
 					</Route>
 
 					{/* Welcome */}
-					<Route exact path="/welcome">
-						<Welcome />
+					<Route path="/welcome" element={<Welcome />}>
+
 					</Route>
 
 					{/* New Author */}
-					<Route exact path="/createAuthor">
-						<CreateAuthor />
+					<Route path="/createAuthor" element={<Register />}>
+
 					</Route>
 
 					{/* Create Tag*/}
-					<Route exact path="/createTag">
-						<CreateTag />
+					<Route path="/createTag" element={<CreateTag />}>
+
 					</Route>
 
 					{/* Create Blog*/}
-					<Route exact path="/create">
-						<Create />
+					<Route path="/create" element={<Create />}>
+
 					</Route>
 
 					{/* Edit */}
-					<Route exact path="/blogs/:blog_id/edit">
-						<Edit />
+					<Route path="/blogs/:blog_id/edit" element={<Edit />}>
+
 					</Route>
 
 					{/* Authors */}
-					<Route exact path="/authors">
-						<AuthorOverview />
+					<Route path="/authors/:id" element={<AuthorDetail />}>
+
+					</Route>
+
+					{/* Authors */}
+					<Route path="/authors" element={<AuthorOverview />}>
+					</Route>
+
+					{/* No auth */}
+					<Route path="/bad" element={<NotAuthorized />}>
+
 					</Route>
 
 					{/* NotFound */}
-					<Route path="*">
-						<NotFound />
+					<Route path="*" element={<NotFound />}>
+
 					</Route>
 
 
-				</Switch>
+
+				</Routes>
 			</div>
 
 		</BrowserRouter>
