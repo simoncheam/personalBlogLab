@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useState, useEffect} from 'react';
-import {useParams, useHistory, Link} from "react-router-dom";
+import {useParams, useNavigate, Link} from "react-router-dom";
 import { Blogs, BlogTagsJoined, Tags} from '../client_types';
 import Skeleton from 'react-loading-skeleton'
 
@@ -15,8 +15,8 @@ const Browse =()=>{
     const [selectedTagId, setSelectedTagId] = useState(null);
     const [tag, setTag]= useState<Tags[]>([]);
 
-    const {goBack} = useHistory();
-    const hist = useHistory();
+    
+    let navigate = useNavigate();
 
     // USE EFFECT #1 - load all tags
 
@@ -115,7 +115,7 @@ return(
             </div>
         ))}
     </div>
-    <div onClick={goBack} className="btn m-2 btn-danger">
+    <div onClick={() => navigate(-1)} className="btn m-2 btn-danger">
         Go Back?
     </div>
     <Link to ={`/blogs/browseauthors/`} className="btn m-2 btn-primary">

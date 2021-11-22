@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { useParams, useHistory, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Blogs, BlogTagsJoined } from '../client_types'
 
 
@@ -42,7 +42,7 @@ const Welcome = () => {
                     <div key={`blog-${blog.id}-${blog.authorid}`} className="container">
 
                         <div className="card col-12 col-md-6 shadow-lg m-3">
-                            <h5 className="card-header">Featured Blog #: {blog.id} </h5>
+                            <h5 className="card-header">Featured Blog #: {blog.id} | Author ID: {blog.authorid} </h5>
 
                             <div className="card-body">
                                 <h5 className="card-title">{blog.title} </h5>

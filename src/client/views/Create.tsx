@@ -4,10 +4,8 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { Blogs, Authors, Tags } from '../client_types'
 
 const Create = () => {
+    
     let navigate = useNavigate();
-
-
-   
 
     //State - Blog
     const [blogs, setBlogs] = useState<Blogs[]>([]);

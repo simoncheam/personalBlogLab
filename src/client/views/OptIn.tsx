@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { useParams, useHistory, Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { Blogs, BlogTagsJoined, Tags } from '../client_types';
 import Skeleton from 'react-loading-skeleton'
 
 
 const OptIn = () => {
-    const hist = useHistory();
+    let navigate = useNavigate();
 
     const [from, setFrom] = React.useState('');  // !!! need to change to contacts email later
     const [subject, setSubject] = React.useState('');
@@ -42,7 +42,7 @@ const OptIn = () => {
         .then(result=>{
             
             console.log(result);
-            hist.push(`/welcome`)
+            navigate(`/welcome`)
         })
     }
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { useParams, useHistory, Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { Blogs, BlogTagsJoined, Tags } from '../client_types';
 import Skeleton from 'react-loading-skeleton'
 
@@ -15,6 +15,8 @@ const Donate = (props: DonateProps) => {
     // hook into our connected client-end stripe context provider
     // which we'll use to tokenize a person's card
     const stripe = useStripe();
+    let navigate = useNavigate();
+
 
 
     // hook into the individual element or elements they give us for CC info

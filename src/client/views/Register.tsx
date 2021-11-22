@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { useParams, useHistory, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Blogs, Authors, Tags } from '../client_types'
 
 //import client types
@@ -8,8 +8,9 @@ import { Blogs, Authors, Tags } from '../client_types'
 
 
 const Register = () => {
+    let navigate = useNavigate();
 
-    const hist = useHistory();
+   
 
     // set author state
     const [author_name, setAuthor_name] = useState("");
@@ -37,7 +38,7 @@ const Register = () => {
             .then(res => res.json())
             .then(data => {
                 localStorage.setItem('token', data.token)
-                hist.push(`/authors`)
+                navigate(`/authors`)
                 console.log(data);
 
 

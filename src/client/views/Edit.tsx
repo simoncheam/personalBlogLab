@@ -5,17 +5,6 @@ import { database_config } from '../../server/config';
 import { Blogs, Authors, Tags, BlogTags, BlogTagsJoined } from '../client_types'
 
 
-// function App() {
-//     return (
-//       <Routes>
-//         <Route
-//           path="blogs/:blog_id"
-//           element={<Edit />}
-//         />
-//       </Routes>
-//     );
-//   }
-
 
 const Edit = () => {
     let params = useParams();
@@ -23,7 +12,7 @@ const Edit = () => {
 
 
     //const { blog_id } = useParams<{ blog_id: string }>(); //old v5
-    const  blog_id  = params.blog_id; //useParams<{ blog_id: string }>(); //v6
+    const blog_id = params.blog_id; //useParams<{ blog_id: string }>(); //v6
 
 
     //State - Blog
@@ -39,7 +28,6 @@ const Edit = () => {
     const [author, setAuthor] = useState<string>("");
     const [selectedAuthorId, setSelectedAuthorId] = useState(0);
     const [selectedTagId, setSelectedTagId] = useState(0);
-
 
 
     const TOKEN_KEY = 'token';
@@ -69,14 +57,14 @@ const Edit = () => {
 
                 if (!res.ok) {
                     alert('BAD BAD BAD! not authorized to edit!')
-                    
-                    navigate(`/login`) 
+
+                    navigate(`/login`)
                     return
                 }
                 console.log('EDIT Res is good!');
                 return res.json()
             }
-            
+
             )
             .then(data => {
                 navigate(`/blogs/${blog_id}`)
@@ -91,17 +79,32 @@ const Edit = () => {
         e.preventDefault();
 
         if (confirm('Are you sure?')) {
-            console.log('delete blog confirmed');
+
         }
         fetch(`/api/blogs/${blog_id}`, {
             method: "DELETE",
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
             }
         })
-            .then(res => res.json())
+            .then(res => {
+
+                if (!res.ok) {
+                    alert('BAD BAD BAD! not authorized!')
+                    console.log('Not authorized to delete, bitch!');
+                    navigate(`/login`)
+
+                    return
+                }
+                console.log('Res is good!');
+                return res.json();
+
+            }
+
+            )
             .then(() => {
                 navigate(`/`)
+
             })
             .catch(e => console.log(e))
     }
@@ -113,6 +116,7 @@ const Edit = () => {
             .then(data => {  //had to remove:(data: BlogTagsJoined) due to error
                 data = data[0];
                 setBlog(data)
+                console.log(blog);
 
                 // setblog state - tag, title, content
                 setBlogTag(data.tag_name)
@@ -121,6 +125,9 @@ const Edit = () => {
 
                 //author state - name 
                 setAuthor(data.a_name)
+                setSelectedAuthorId(data.a_id)
+                console.log(`selectedAuthorId : ${selectedAuthorId}`);
+
             })
             .catch(e => console.log(e))
 
@@ -146,27 +153,32 @@ const Edit = () => {
     const handleAuthorSelectUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
         console.log(e.target.value);
         setSelectedAuthorId(Number(e.target.value))
+        //setSelectedAuthorId(Number(author.id))
+
+
     };
 
     // handleTagSelectUpdate
     const handleTagSelectUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
 
         setSelectedTagId(Number(e.target.value))
-        console.log(Number(e.target.value));
+        // console.log(Number(e.target.value));
     };
 
 
 
     return (
         <>
-            <h1 className="display-3 m-3 text-center">👋 Hey, {author} Edit Your Blog! </h1>
+            <h1 className="display-3 m-3 text-center">👋 Hey, {author}, Edit Your Blog! </h1>
 
             <div className="row mt-5 justify-content-center">
                 <div className="form-group col-6">
 
-                    {/* ----------- select authorname ----------- */}
+                    {/* ----------- GOAL: REMOVE AFTER DEBUG - can this work without author select ----------- */}
 
-                    <label >Update Author:</label>
+                    <label >Author: {author}</label>
+
+
                     <select onChange={handleAuthorSelectUpdate} className="form-control m-2">
                         <div className="input-group-prepend">
                             <span className="input-group-text" id="basic-addon1">@</span>

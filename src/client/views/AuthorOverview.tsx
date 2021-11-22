@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { useParams, useHistory, Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { Blogs, Authors, Tags } from '../client_types'
 
 //import client types
 
 const AuthorOverview = () => {
 
-    const { goBack } = useHistory();
-    const hist = useHistory();
+    
+    let navigate = useNavigate();
 
     // set author state
     const [authors, setAuthors] = useState<Authors[]>([]);
@@ -61,7 +61,7 @@ const AuthorOverview = () => {
                             Click Here To Get Started Today!
                         </Link>
                     </div>
-                    <div onClick={goBack} className="btn mt-2 btn-danger">
+                    <div onClick={() => navigate(-1)} className="btn mt-2 btn-danger">
                         Go Back?
                     </div>
                 </div>

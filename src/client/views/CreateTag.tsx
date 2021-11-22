@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { useState, useEffect, useRef } from 'react';
-import { useParams, useHistory, Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { Blogs, Authors, Tags } from '../client_types'
 
 //import client types
@@ -11,8 +11,7 @@ const CreateTag = () => {
 
     const pizza = useRef(null);
 
-    const { goBack } = useHistory();
-    const hist = useHistory();
+    let navigate = useNavigate();
 
     // set author state
 
@@ -39,7 +38,7 @@ const CreateTag = () => {
         })
             .then(res => res.json())
             .then(data => {
-                hist.push(`/create`)
+                navigate(`/create`)
             })
             .catch(these_hands => {
                 console.log(these_hands)

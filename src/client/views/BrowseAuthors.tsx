@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useState, useEffect} from 'react';
-import {useParams, useHistory, Link} from "react-router-dom";
+import {useParams, useNavigate, Link} from "react-router-dom";
 import { Blogs, BlogTagsJoined, Tags, Authors} from '../client_types';
 import Skeleton from 'react-loading-skeleton'
 
@@ -15,8 +15,9 @@ const BrowseAuthors =()=>{
     const [selectedAuthorId, setSelectedAuthorId] = useState(null);
     const [authors, setAuthors]= useState<Authors[]>([]);
 
-    const {goBack} = useHistory();
-    const hist = useHistory();
+    
+    let navigate = useNavigate();
+
 
     // USE EFFECT #1 - load all authors
 
@@ -115,7 +116,7 @@ return(
             </div>
         ))}
     </div>
-    <div onClick={goBack} className="btn m-2 btn-danger">
+    <div onClick={() => navigate(-1)} className="btn m-2 btn-danger">
         Go Back?
     </div>
     <Link to ={`/blogs/browse/`} className="btn m-2 btn-primary">
