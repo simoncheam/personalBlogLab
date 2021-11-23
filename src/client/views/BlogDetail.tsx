@@ -6,6 +6,7 @@ import { BlogTagsJoined } from '../client_types'
 //import client types
 
 const BlogDetail = () => {
+
     let params = useParams();
     let navigate = useNavigate();
     const  blog_id  = params.blog_id;
@@ -14,7 +15,6 @@ const BlogDetail = () => {
     //const { blog_id } = useParams<{ blog_id: string }>();
     const [blog, setBlog] = useState<BlogTagsJoined>();
     const [blog_tag, setBlogTag] = useState<string>();
-    
     
     //useEffect
     useEffect(() => {

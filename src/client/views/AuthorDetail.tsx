@@ -5,37 +5,59 @@ import { Blogs, Authors, Tags } from '../client_types'
 
 //import client types
 
-const AuthorOverview = () => {
+const AuthorDetail = () => {
 
-    
     let navigate = useNavigate();
 
     let params = useParams();
-    const  user_id  = params.user_id;
+    const id = params.id;
 
     // set author state
-    const [authors, setAuthors] = useState<Authors[]>([]);
+    const [author, setAuthor] = useState<Authors>();
 
     //useEffect
     useEffect(() => {
-        fetch(`/api/authors/${user_id}`)
-            .then(res => res.json())
-            .then(a => setAuthors(a))
+        fetch(`/api/authors/${id}`)
+            .then(res => {
+
+            
+                if (res.status===401) {
+                    alert('Not authenticated! Login and try again!')
+                    navigate(`/login`)
+                    return;
+                }
+                
+                
+                return res.json()
+            }
+                
+
+            )
+            .then(a => {
+                
+                console.log(a);
+
+                setAuthor(a.one_author)
+            }
+            
+            )
             .catch(e => console.log(e))
     }, []);
+
+    if (!author) { return <h1>LOADING...</h1> }
 
 
     return (
         <>
             <div className="row mt-5 justify-content-center">
                 <div className="col-md-8">
-                    <h1 className="display-3 m-3 text-center">🏆 Welcome, USERNAME ✍️</h1>
+                    <h1 className="display-3 m-3 text-center">🏆 Welcome, {author.name} ✍️</h1>
                     <div className=" row justify-content-center">
-            <Link to={`/createAuthor`} className=" btn m-2 btn-success ">
-                Got Something Interesting To Say? Click Here To Share Your Ideas Today!
+                        <Link to={`/createAuthor`} className=" btn m-2 btn-success ">
+                            Got Something Interesting To Say? Click Here To Share Your Ideas Today!
             </Link>
                     </div>
-                   
+
                     <div className=" row justify-content-center">
                         <Link to={`/createAuthor`} className=" btn m-2 btn-success ">
                             Click Here To Get Started Today!
@@ -50,4 +72,4 @@ const AuthorOverview = () => {
     );
 }
 
-export default AuthorOverview;
+export default AuthorDetail;

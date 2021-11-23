@@ -9,6 +9,9 @@ const router = Router();
 router.post('/', async (req, res) =>{
 
     const newUser = req.body;
+
+    
+
     try {
         
         //create new hash
@@ -17,7 +20,7 @@ router.post('/', async (req, res) =>{
         //insert new user into db
         const result = await db_authors.create(newUser);
         result.insertId;
-        console.log('creating new author!');
+        
         console.log(result);
 
         //create new Token

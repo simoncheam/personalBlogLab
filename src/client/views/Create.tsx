@@ -4,7 +4,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { Blogs, Authors, Tags } from '../client_types'
 
 const Create = () => {
-    
+
     let navigate = useNavigate();
 
     //State - Blog
@@ -100,23 +100,26 @@ const Create = () => {
                 tagid: selectedTagId
             })
         })
-            .then(res => {
+            .then(async res => {
+                const data = await res.json();
 
                 if (!res.ok) {
-                    alert('BAD BAD BAD! not authorized!')
-                    console.log('!res.ok nav to login bitch!'); 
-                    navigate(`/login`) 
 
-                    return
+                    alert(data.message)
+                    console.log(data.message);
+                    navigate(`/login`)
+                    return;
+
                 }
-                console.log('Res is good!');
-                return res.json();
+                // note to self: Don't forget the return! 
+                return;
+
             }
 
             )
             .then(data => { //happens if authorized
-                navigate(`/`)
                 console.log(data);
+                navigate(`/`)
             })
             .catch(e => console.log(e))
     }
@@ -146,7 +149,7 @@ const Create = () => {
 
                     </select>
 
-                    <Link to={`/createAuthor`} className=" row btn m-2 btn-warning">
+                    <Link to={`/register`} className=" row btn m-2 btn-warning">
                         Not a Blogger yet? Click here and be one today!🖋
                     </Link>
 

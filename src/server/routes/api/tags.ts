@@ -1,12 +1,12 @@
-import tagz from '../../database/queries/tags';
 import * as express from 'express';
-import { Tags } from '../../types';
+import tagz from '../../database/queries/tags';
+import { ReqUser, Tags } from '../../types';
 import {tokenCheck} from '../../middlewares/tokenCheck.mw'
 
 const router = express.Router();
 
 router.route('*')
-.post(tokenCheck)
+
 .put(tokenCheck)
 .delete(tokenCheck)
 
@@ -22,7 +22,9 @@ router.get('/', async (req, res) => {
 });
 
 
-router.post('/', async (req, res) => {
+router.post('/', tokenCheck, async (req: ReqUser, res) => {
+
+    //console.log('TAG API POST ROUTE');
 
     const { name }: Tags = req.body;
 

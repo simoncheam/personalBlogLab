@@ -1,6 +1,6 @@
+import * as express from 'express';
 import blogz from '../../database/queries/blogs';
 import blogtagz from '../../database/queries/blogtags';
-import * as express from 'express';
 import { Blogs, Authors, BlogTagsJoined, BlogTags, ReqUser } from '../../types'
 import {tokenCheck} from '../../middlewares/tokenCheck.mw'
 import {authorCheck} from '../../middlewares/authorCheck.mw'
@@ -90,30 +90,34 @@ router.get('/:id', async (req, res) => {
 // Create
 
 router.post('/', tokenCheck, async (req: ReqUser, res) => {
+    console.log('INSIDE POST BLOCK');
 
-    
     const { tagid, title, content, authorid } = req.body;
+    
     console.log('req.user:'); 
     console.log(req.user);
+    
+    if(!req.user){
+        return res.status(401).json({ 
+            message: "YOU GOD DAMN INAUTHENTIC ASSHOLE! GTFO LOL!" 
+        })
+    }
+
+
 
     //This is it!
     console.log('req.user.userid:'); 
     console.log(req.user.userid);
 
-
-    console.log('INSIDE POST BLOCK');
-
-    console.log(`req.userid is: ${req.userid}`); //undefined
-    console.log(`req.user[0] is: ${req.user[0]}`); //undefined
-    console.log(`req.user.id is: ${req.user.id}`); //undefined
-
-
     console.log(`authorid is: ${authorid}`);
+
     
     // author- user check (cannot impersonate another user)
     if(authorid !== req.user.userid) {
-        console.log('FUCK YOU IMPERSONATOR! GTFO');
-        return
+        // returns res to !res.ok block
+        return res.status(403).json({ 
+            message: "YOU GOD DAMN UNAUTHORIZED IMPERSONATOR! GTFO LOL!" 
+        })
     }
 
 

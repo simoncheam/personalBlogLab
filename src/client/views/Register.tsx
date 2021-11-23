@@ -10,18 +10,24 @@ import { Blogs, Authors, Tags } from '../client_types'
 const Register = () => {
     let navigate = useNavigate();
 
-   
+
 
     // set author state
     const [author_name, setAuthor_name] = useState("");
     const [author_email, setAuthor_email] = useState("");
-    const [author_password, setAuthor_password] = useState("");
+    const [author_password, setAuthor_password] = useState(null);
+
+
+
 
 
     const handleSubmitButton = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        if (!author_name || !author_email) return alert('🤬 Fill out the god damn fields! Not a good start to your blogging career🤦🏻‍♂️')
+        if (!author_name || !author_email || author_password == null)
+            return alert('🤬 Fill out the god damn fields! Not a good start to your blogging career🤦🏻‍♂️');
+
+
 
 
         fetch("/auth/register", {
@@ -29,19 +35,45 @@ const Register = () => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ 
-                name: author_name, 
+            body: JSON.stringify({
+                name: author_name,
                 email: author_email,
-                password: author_password 
+                password: author_password
             })
         })
-            .then(res => res.json())
+            .then(async res => {
+
+                const data = await res.json()
+
+                if (res.ok) {
+                    
+                    //@ts-ignore
+                    const { token } = await res.json;
+                    localStorage.setItem('token', token)
+                    console.log('Successful registration');
+
+
+                    // insert toast - success
+                    return data;
+
+                } 
+
+
+
+                return res.json()
+            }
+
+            )
             .then(data => {
+
+                //success => push to create page
+
+                // !!! insert react-bootstrap toast
+                alert('Welcome!')
+
                 localStorage.setItem('token', data.token)
-                navigate(`/authors`)
+                navigate(`/create`)
                 console.log(data);
-
-
 
             })
             .catch(these_hands => {

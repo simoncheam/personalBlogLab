@@ -36,14 +36,13 @@ const App = () => {
 
 			<div className="container">
 				<Routes>
-					
-					{/* ! strips might be messed up from react v6 update */}
+
 					<Route path="/donate" element={
 						<Elements stripe={stripe}>
 							<Donate />
 						</Elements>
 					} >
-						
+
 					</Route>
 
 					{/* BrowseAuthors */}
@@ -83,7 +82,7 @@ const App = () => {
 					</Route>
 
 					{/* New Author */}
-					<Route path="/createAuthor" element={<Register />}>
+					<Route path="/register" element={<Register />}>
 
 					</Route>
 
@@ -103,13 +102,17 @@ const App = () => {
 					</Route>
 
 					{/* Authors */}
-					<Route path="/authors/:id" element={<AuthorDetail />}>
 
-					</Route>
 
 					{/* Authors */}
-					<Route path="/authors" element={<AuthorOverview />}>
+					<Route path="/authors" >
+						<Route index element={<AuthorOverview />} />
+						<Route path=":id" element={<AuthorDetail />} />
+
 					</Route>
+
+
+
 
 					{/* No auth */}
 					<Route path="/bad" element={<NotAuthorized />}>

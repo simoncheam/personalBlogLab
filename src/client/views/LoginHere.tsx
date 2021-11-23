@@ -7,11 +7,14 @@ const LoginHere = () => {
     let navigate = useNavigate();
 
     const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+    const [password, setPassword] = useState<string>(null);
     
 
     const handleLoginButton = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
+
+        if (!email || password == null)
+            return alert('🤬 Fill out the god damn fields!🤦🏻‍♂️');
 
 
 
@@ -30,7 +33,7 @@ const LoginHere = () => {
 
                 if(!res.ok) {
                     alert('not authorized!')
-                    navigate(`/bad`)
+                    navigate(`/login`)
 
                 }
 

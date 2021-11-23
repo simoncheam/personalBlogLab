@@ -18,6 +18,9 @@ const CreateTag = () => {
     const [tags, setTags] = useState<Tags[]>([]);
     const [new_tag_name, setNewTag_name] = useState("");
 
+    const TOKEN_KEY = 'token';
+    const token = localStorage.getItem(TOKEN_KEY);
+
     const handleSubmitButton = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
@@ -30,18 +33,45 @@ const CreateTag = () => {
         fetch("/api/tags", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
             },
-            body: JSON.stringify({ 
-                name: new_tag_name 
+            body: JSON.stringify({
+                name: new_tag_name
             })
         })
-            .then(res => res.json())
-            .then(data => {
+            .then(async res => {
+                const data = await res.json()
+
+                if (res.status === 500) {
+                    alert('Check your entry and try again!')
+                    return console.log(data.message);
+
+                }
+
+                if (!res.ok) {
+                    console.log('res is NOT OK');
+
+                    alert(data.message)
+                    console.log(data.message);
+                    navigate(`/login`)
+                    return;
+                }
+                console.log(data.message);
+
+
+                return;
+
+            }
+
+            )
+            .then(data => {  //Q: Should I be doing anything with this data?
+                //console.log(data);
+
                 navigate(`/create`)
             })
-            .catch(these_hands => {
-                console.log(these_hands)
+            .catch(e => {
+                console.log(e)
             })
     };
 

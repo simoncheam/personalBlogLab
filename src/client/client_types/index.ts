@@ -6,7 +6,7 @@ export interface MySQL_Default_Response {
 
 export interface Authors {
     id?: number;
-    name: string;
+    name?: string;
     email?: string;
     _created?: string 
 }
