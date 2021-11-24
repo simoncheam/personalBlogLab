@@ -44,6 +44,8 @@ const OptIn = () => {
             console.log(result);
             navigate(`/welcome`)
         })
+        .catch(e => console.log(e))
+
     }
 
     return (

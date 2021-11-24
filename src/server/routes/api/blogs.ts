@@ -2,8 +2,8 @@ import * as express from 'express';
 import blogz from '../../database/queries/blogs';
 import blogtagz from '../../database/queries/blogtags';
 import { Blogs, Authors, BlogTagsJoined, BlogTags, ReqUser } from '../../types'
-import {tokenCheck} from '../../middlewares/tokenCheck.mw'
-import {authorCheck} from '../../middlewares/authorCheck.mw'
+import { tokenCheck } from '../../middlewares/tokenCheck.mw'
+import { authorCheck } from '../../middlewares/authorCheck.mw'
 
 
 const router = express.Router();
@@ -40,13 +40,11 @@ router.get('/browseauthors/:authorid', async (req, res) => {
     const authorid = req.params.authorid;
 
     try {
-
         const all_blogs_by_author = await blogz.get_all_by_authorid(Number(authorid));
         res.status(200).json(all_blogs_by_author);
 
     } catch (error) {
         res.status(500).json({ message: "A server errors occurred", error: error.sqlMessage });
-
     }
 })
 
@@ -60,7 +58,6 @@ router.get('/browse/:tagid', async (req, res) => {
         const all_blogs_tagged = await blogz.get_all_by_tagid(Number(tagid));
         res.status(200).json(all_blogs_tagged);
 
-
     } catch (error) {
         res.status(500).json({ message: "A server errors occurred", error: error.sqlMessage });
     }
@@ -69,7 +66,6 @@ router.get('/browse/:tagid', async (req, res) => {
 
 
 // get one
-
 router.get('/:id', async (req, res) => {
 
     const id = req.params.id;
@@ -88,35 +84,31 @@ router.get('/:id', async (req, res) => {
 })
 
 // Create
-
 router.post('/', tokenCheck, async (req: ReqUser, res) => {
     console.log('INSIDE POST BLOCK');
 
     const authorid = req.user.userid;
     const { tagid, title, content } = req.body;
-    
-    console.log('req.user:'); 
+
+    console.log('req.user:');
     console.log(req.user);
-    
 
 
     //This is it!
-    console.log('req.user.userid:'); 
+    console.log('req.user.userid:');
     console.log(req.user.userid);
 
     console.log(`authorid is: ${authorid}`);
 
-
     //const {token} = req.headers.authorization
     console.log('Router -Post TOKEN CHECK HERE');
-  
 
     //input validation
     if (!content || !title || !tagid) {  //    "authorid": 1,
         return res.status(400).json({ message: "Fill out everything!" })
     }
 
-    
+
     try {
 
         const blogResults = await blogz.create({ title, content, authorid });
@@ -136,16 +128,15 @@ router.post('/', tokenCheck, async (req: ReqUser, res) => {
 
 // update blog
 
-router.put('/:id',tokenCheck, authorCheck, async (req: ReqUser, res) => {
+router.put('/:id', tokenCheck, authorCheck, async (req: ReqUser, res) => {
 
-    const { title, content, authorid, a_id, tagid } = req.body; 
+    const { title, content, tagid } = req.body;
     console.log(`req.userid : ${req.userid}`);
+    const authorid = req.user.userid;
 
     console.log({ title, content, authorid });// WORKS!
     //console.log({ title, content, a_id });
     console.log('INSIDE BLOG PUT ROUTER!');
-
-
 
     if (!title || !content || !authorid) {
         return res.status(400).json({ message: "Fill out everything!" })
@@ -155,7 +146,9 @@ router.put('/:id',tokenCheck, authorCheck, async (req: ReqUser, res) => {
         const id = Number(req.params.id);
         const resultz = await blogz.update({ title, content, authorid }, id);
         const blogid = id;
+
         await blogtagz.update(tagid, blogid)
+
         console.log('INSIDE TRY BLOCK - BLOG PUT ROUTER!');
 
         res.status(201).json({ message: "Updated Blog!" });
@@ -169,15 +162,14 @@ router.put('/:id',tokenCheck, authorCheck, async (req: ReqUser, res) => {
 
 
 
-
 // delete
 
-router.delete('/:id', tokenCheck,authorCheck, async (req, res) => {
+router.delete('/:id', tokenCheck, authorCheck, async (req, res) => {
 
     const id = Number(req.params.id);
 
     const { tagid } = req.body;
-    
+
 
 
     try {

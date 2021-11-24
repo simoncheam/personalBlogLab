@@ -166,23 +166,8 @@ const Edit = () => {
             <div className="row mt-5 justify-content-center">
                 <div className="form-group col-6">
 
-                    {/* ----------- GOAL: REMOVE AFTER DEBUG - can this work without author select ----------- */}
 
-                    <label >Author: {author}</label>
-
-
-                    <select onChange={handleAuthorSelectUpdate} className="form-control m-2">
-                        <div className="input-group-prepend">
-                            <span className="input-group-text" id="basic-addon1">@</span>
-                        </div>
-                        <option  >Current: {author} (please select update below)</option>
-
-                        {authors.map(author => (
-                            <option key={`author-option-${author.id}`} value={author.id}>
-                                {author.name}
-                            </option>
-                        ))}
-                    </select>
+                    
 
                     {/* ----------- select Tag ----------- */}
 

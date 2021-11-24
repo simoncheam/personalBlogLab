@@ -3,14 +3,10 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Blogs, Authors, Tags } from '../client_types'
 
-//import client types
-
 
 
 const Register = () => {
     let navigate = useNavigate();
-
-
 
     // set author state
     const [author_name, setAuthor_name] = useState("");
@@ -18,15 +14,11 @@ const Register = () => {
     const [author_password, setAuthor_password] = useState(null);
 
 
-
-
-
     const handleSubmitButton = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
         if (!author_name || !author_email || author_password == null)
             return alert('🤬 Fill out the god damn fields! Not a good start to your blogging career🤦🏻‍♂️');
-
 
 
 
@@ -46,19 +38,15 @@ const Register = () => {
                 const data = await res.json()
 
                 if (res.ok) {
-                    
+
                     //@ts-ignore
                     const { token } = await res.json;
                     localStorage.setItem('token', token)
                     console.log('Successful registration');
 
-
-                    // insert toast - success
                     return data;
 
-                } 
-
-
+                }
 
                 return res.json()
             }
@@ -68,7 +56,7 @@ const Register = () => {
 
                 //success => push to create page
 
-                // !!! insert react-bootstrap toast
+                // !!! insert react-bootstrap toast?
                 alert('Welcome!')
 
                 localStorage.setItem('token', data.token)

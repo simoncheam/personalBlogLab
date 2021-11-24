@@ -113,7 +113,6 @@ const App = () => {
 
 
 
-
 					{/* No auth */}
 					<Route path="/bad" element={<NotAuthorized />}>
 
