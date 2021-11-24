@@ -6,7 +6,6 @@ import { Blogs, Authors, Tags } from '../client_types'
 
 //import client types
 
-
 const CreateTag = () => {
 
     const pizza = useRef(null);
@@ -26,7 +25,7 @@ const CreateTag = () => {
 
         if (!new_tag_name) return alert('Fill out the god damn fields!')
 
-        //Question: what is the best way to alert user of duplicate entry attempt?
+        //Question: what is the best way to alert user of duplicate entry attempt? 500=>check entry?
         //the table Tag name is unique so it does not allow it
 
 
@@ -46,7 +45,6 @@ const CreateTag = () => {
                 if (res.status === 500) {
                     alert('Check your entry and try again!')
                     return console.log(data.message);
-
                 }
 
                 if (!res.ok) {
@@ -58,33 +56,23 @@ const CreateTag = () => {
                     return;
                 }
                 console.log(data.message);
-
-
                 return;
-
             }
-
             )
-            .then(data => {  //Q: Should I be doing anything with this data?
-                //console.log(data);
-
+            .then(data => {
                 navigate(`/create`)
             })
             .catch(e => {
                 console.log(e)
             })
     };
-
     //useEffect
     useEffect(() => {
-
         fetch('/api/tags')
             .then(res => res.json())
             .then(t => setTags(t))
             .catch(e => console.log(e))
     }, []);
-
-
 
     return (
         <>
@@ -122,12 +110,7 @@ const CreateTag = () => {
                                 pizza.current.scrollIntoView(); //this focuses text field if scroll view alignment is off
 
                             }} />
-
-
                         <button onClick={handleSubmitButton} className="btn btn-primary m-2 shadow ">Click to Create a New Tag!</button>
-
-
-
                     </div>
                 </div>
             </div>

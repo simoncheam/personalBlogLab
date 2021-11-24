@@ -1,3 +1,6 @@
 {
-    "materialTheme.accent": "Tomato"
+    "materialTheme.accent": "Tomato",
+    "cSpell.ignoreWords": [
+        "userid"
+    ]
 }

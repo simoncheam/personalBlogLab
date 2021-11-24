@@ -1,3 +1,4 @@
+import FormData from 'form-data';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from "react-router-dom";
@@ -8,40 +9,19 @@ const Create = () => {
     let navigate = useNavigate();
 
     //State - Blog
-    const [blogs, setBlogs] = useState<Blogs[]>([]);
     const [blog_content, setBlogContent] = useState("");
     const [blog_title, setBlogTitle] = useState("");
-    const [blog_tag, setBlogTag] = useState("");
 
     // State - Tags
     const [tag, setTag] = useState<Tags[]>([]);
 
     // State - Author
-    const [authors, setAuthors] = useState<Authors[]>([]);
-    const [selectedAuthorId, setSelectedAuthorId] = useState(0);
     const [selectedTagId, setSelectedTagId] = useState(0);
 
 
 
-
-    //useEffect
     useEffect(() => {
-        fetch(`/api/blogs`)
-            .then(res => res.json())
-            .then(data => {
-                setBlogs(data)
-            })
-            .catch(error => {
-                console.log(error);
-            });
 
-        fetch('/api/authors')
-            .then(res => res.json())
-            .then((a) => {
-                setAuthors(a)
-
-            })
-            .catch(e => console.log(e))
 
         fetch('/api/tags')
             .then(res => res.json())
@@ -51,27 +31,15 @@ const Create = () => {
             })
             .catch(e => console.log(e))
 
-        // !! make fetch to api route to grab token info
-
 
     }, []);
 
-
-    // handleAuthorSelectUpdate
-    const handleAuthorSelectUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        console.log(e.target.value);
-        setSelectedAuthorId(Number(e.target.value))
-    };
 
     // handleTagSelectUpdate
     const handleTagSelectUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedTagId(Number(e.target.value))
         console.log(selectedTagId);
     };
-
-    if (!blogs) {
-        <h1>Loading...</h1>
-    }
 
     // const handleSubmitButton
     const TOKEN_KEY = 'token';
@@ -81,7 +49,7 @@ const Create = () => {
         newblog.preventDefault();
 
         //input val
-        if (!blog_content || !blog_title || !selectedAuthorId || !selectedTagId) return alert('🤬 Fill out the god damn fields!')
+        if (!blog_content || !blog_title || !selectedTagId) return alert('🤬 Fill out the god damn fields!')
 
         //!!!------------- ADD USER VALIDATION CHECK
 
@@ -94,7 +62,7 @@ const Create = () => {
                 // Authorization header with token applied
             },
             body: JSON.stringify({
-                authorid: selectedAuthorId,
+
                 content: blog_content,
                 title: blog_title,
                 tagid: selectedTagId
@@ -109,13 +77,9 @@ const Create = () => {
                     console.log(data.message);
                     navigate(`/login`)
                     return;
-
                 }
-                // note to self: Don't forget the return! 
-                return;
-
+                return data;
             }
-
             )
             .then(data => { //happens if authorized
                 console.log(data);
@@ -131,23 +95,7 @@ const Create = () => {
             <div className="row mt-5 justify-content-center">
                 <div className="form-group col-6">
 
-                    <label className="row" >✍️ Author:</label>
 
-                    <select onChange={handleAuthorSelectUpdate} className="form-control m-2">
-
-                        <div className="input-group-prepend">
-                            <span className="input-group-text" id="basic-addon1">@</span>
-                        </div>
-
-                        <option value={0}> Select Your Name </option>
-
-                        {authors.map(author => (
-                            <option key={`author-option-${author.id}`} value={author.id}>
-                                {author.name}
-                            </option>
-                        ))}
-
-                    </select>
 
                     <Link to={`/register`} className=" row btn m-2 btn-warning">
                         Not a Blogger yet? Click here and be one today!🖋
@@ -157,17 +105,17 @@ const Create = () => {
 
                     <label className="row" >🏷 Tag</label>
 
-                    <select onChange={handleTagSelectUpdate} className="form-control m-2">
+                    <select value={selectedTagId} onChange={handleTagSelectUpdate} className="form-control m-2">
 
-                        <div className="input-group-prepend">
-                            <span className="input-group-text" id="basic-addon1">@</span>
-                        </div>
+
 
                         <option value={0}> Select a Tag for your Blog</option>
 
                         {tag.map(t => (
                             <option key={`author-option-${t.id}`} value={t.id}>
-                                {t.name}
+
+
+                                #{t.name}
                             </option>
                         ))}
                     </select>
@@ -185,8 +133,8 @@ const Create = () => {
 
                     {/* set Blog Content */}
 
-                    <div className="form-control input-group-text m-2" onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBlogContent(e.target.value)} >
-                        <textarea className="form-control input-group-text" value={blog_content} placeholder="Write your Blog here..."  >
+                    <div className="form-control input-group-text m-2"  >
+                        <textarea onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setBlogContent(e.target.value)} className="form-control input-group-text" value={blog_content} placeholder="Write your Blog here..."  >
                         </textarea>
                     </div>
 

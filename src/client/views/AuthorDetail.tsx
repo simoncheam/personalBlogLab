@@ -3,11 +3,12 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Blogs, Authors, Tags } from '../client_types'
 
-//import client types
 
 const AuthorDetail = () => {
 
     let navigate = useNavigate();
+    const TOKEN_KEY = 'token';
+    const token = localStorage.getItem(TOKEN_KEY);
 
     let params = useParams();
     const id = params.id;
@@ -15,31 +16,39 @@ const AuthorDetail = () => {
     // set author state
     const [author, setAuthor] = useState<Authors>();
 
+
+
     //useEffect
     useEffect(() => {
-        fetch(`/api/authors/${id}`)
+        fetch(`/api/authors/${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            }
+        })
             .then(res => {
 
-            
-                if (res.status===401) {
+
+                if (res.status === 401) {
                     alert('Not authenticated! Login and try again!')
                     navigate(`/login`)
                     return;
                 }
-                
-                
+
+
                 return res.json()
             }
-                
+
 
             )
             .then(a => {
-                
+
                 console.log(a);
 
                 setAuthor(a.one_author)
             }
-            
+
             )
             .catch(e => console.log(e))
     }, []);
@@ -51,23 +60,21 @@ const AuthorDetail = () => {
         <>
             <div className="row mt-5 justify-content-center">
                 <div className="col-md-8">
-                    <h1 className="display-3 m-3 text-center">🏆 Welcome, {author.name} ✍️</h1>
-                    <div className=" row justify-content-center">
-                        <Link to={`/createAuthor`} className=" btn m-2 btn-success ">
-                            Got Something Interesting To Say? Click Here To Share Your Ideas Today!
-            </Link>
-                    </div>
+                    <h1 className="display-3 m-3 text-center">🏆 {author.name} ✍️</h1>
+                    <div className="row m-5">Hi my name is {author.name}, this is my personal bio. You can email me at {author.email} for more juicy details about my life. Have a nice day:)</div>
 
-                    <div className=" row justify-content-center">
-                        <Link to={`/createAuthor`} className=" btn m-2 btn-success ">
-                            Click Here To Get Started Today!
-                        </Link>
+                        <div className=" row justify-content-center">
+                            <Link to={`/create`} className=" btn m-2 btn-success ">
+                                Got Something Interesting To Say? Click Here To Share Your Ideas Today!
+            </Link>
+                        </div>
+
+
+                        <div onClick={() => navigate(-1)} className="btn mt-2 btn-danger">
+                            Go Back?
                     </div>
-                    <div onClick={() => navigate(-1)} className="btn mt-2 btn-danger">
-                        Go Back?
                     </div>
                 </div>
-            </div>
         </>
     );
 }

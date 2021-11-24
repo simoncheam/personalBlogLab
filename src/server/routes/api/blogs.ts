@@ -92,17 +92,12 @@ router.get('/:id', async (req, res) => {
 router.post('/', tokenCheck, async (req: ReqUser, res) => {
     console.log('INSIDE POST BLOCK');
 
-    const { tagid, title, content, authorid } = req.body;
+    const authorid = req.user.userid;
+    const { tagid, title, content } = req.body;
     
     console.log('req.user:'); 
     console.log(req.user);
     
-    if(!req.user){
-        return res.status(401).json({ 
-            message: "YOU GOD DAMN INAUTHENTIC ASSHOLE! GTFO LOL!" 
-        })
-    }
-
 
 
     //This is it!
@@ -110,15 +105,6 @@ router.post('/', tokenCheck, async (req: ReqUser, res) => {
     console.log(req.user.userid);
 
     console.log(`authorid is: ${authorid}`);
-
-    
-    // author- user check (cannot impersonate another user)
-    if(authorid !== req.user.userid) {
-        // returns res to !res.ok block
-        return res.status(403).json({ 
-            message: "YOU GOD DAMN UNAUTHORIZED IMPERSONATOR! GTFO LOL!" 
-        })
-    }
 
 
     //const {token} = req.headers.authorization

@@ -49,7 +49,6 @@ const Edit = () => {
             body: JSON.stringify({
                 title: blog_title,
                 content: blog_content,
-                authorid: selectedAuthorId,
                 tagid: selectedTagId
             })
         })
@@ -126,7 +125,6 @@ const Edit = () => {
                 //author state - name 
                 setAuthor(data.a_name)
                 setSelectedAuthorId(data.a_id)
-                console.log(`selectedAuthorId : ${selectedAuthorId}`);
 
             })
             .catch(e => console.log(e))
@@ -153,18 +151,12 @@ const Edit = () => {
     const handleAuthorSelectUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
         console.log(e.target.value);
         setSelectedAuthorId(Number(e.target.value))
-        //setSelectedAuthorId(Number(author.id))
-
-
     };
 
     // handleTagSelectUpdate
     const handleTagSelectUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
-
         setSelectedTagId(Number(e.target.value))
-        // console.log(Number(e.target.value));
     };
-
 
 
     return (

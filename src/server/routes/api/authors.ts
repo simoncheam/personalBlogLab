@@ -28,7 +28,7 @@ router.get('/', async (req, res) => {
             delete a.password;
         }
         )
-        console.log(all_authors);
+      //  console.log(all_authors);
 
         res.status(200).json(all_authors)
 
@@ -46,7 +46,7 @@ router.get('/:user_id', tokenCheck, async (req: ReqUser, res) => {
     const id = req.params.user_id;
     //const {name} = req.user.name;
 
-  
+  console.log('GET author by ID!');
 
     try {
 
