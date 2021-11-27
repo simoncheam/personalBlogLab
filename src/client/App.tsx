@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
+import { useRoutes } from 'react-router-dom';
 import Blogs from './views/Blogs';
 import Create from './views/Create';
 import Browse from './views/Browse';
@@ -20,6 +20,11 @@ import Welcome from './views/Welcome';
 import LoginHere from './views/LoginHere';
 import NotAuthorized from './views/NotAuthorized';
 import AuthorDetail from './views/AuthorDetail';
+import PrivateRoute from './components/PrivateRoute';
+import SecretPage from './views/SecretPage(test)';
+import OtherSecret from './views/OtherSecret';
+import SecretPage1 from './views/SecretPage1';
+import SecretPage2 from './views/SecretPage2';
 
 
 const stripe = loadStripe('pk_test_51JrmRQKRuAnoTcjnMIgGXWelfVNUongEu9Ja2mkoFoIJseO0x7AsD9PqIkk3IjnDrjj7z67fKPzrhlBqsANseyi700PDjNRoox');
@@ -42,6 +47,17 @@ const App = () => {
 							<Donate />
 						</Elements>
 					} >
+
+					</Route>
+
+					{/* Private Route */}
+
+
+					{/* Outer wrapper is path to element  */}
+					<Route path="/private" element={<PrivateRoute/>}>
+						{/* <Route index element={<h1>Secret Page</h1>}	/> */}
+						<Route path="secret1" element={<SecretPage1/>}/>
+						<Route path="secret2" element={<SecretPage2/>}/>
 
 					</Route>
 

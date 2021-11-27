@@ -1,6 +1,6 @@
 import React from 'react'
 
-const HomeTest = () => {
+const OtherSecret = () => {
     return (
         <div>
             
@@ -8,4 +8,4 @@ const HomeTest = () => {
     )
 }
 
-export default HomeTest
+export default OtherSecret

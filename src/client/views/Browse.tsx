@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Blogs, BlogTagsJoined, Tags } from '../client_types';
 import Skeleton from 'react-loading-skeleton'
+import { APIService } from '../services/APIService';
 
 
 //import client types
@@ -20,8 +21,10 @@ const Browse = () => {
 
     useEffect(() => {
 
-        fetch('/api/tags')
-            .then(res => res.json())
+        APIService(`/api/tags`)
+
+        // fetch('/api/tags')
+        //     .then(res => res.json())
             .then((t) => {
                 setTag(t)
             })
@@ -31,9 +34,10 @@ const Browse = () => {
     useEffect(() => {
 
         if (!selectedTagId) { return }
+        APIService(`/api/blogs/browse/${selectedTagId}`)
 
-        fetch(`/api/blogs/browse/${selectedTagId}`)
-            .then(res => res.json())
+        // fetch(`/api/blogs/browse/${selectedTagId}`)
+        //     .then(res => res.json())
             .then(data => {
                 setAllBlogs(data[0])
                 setHasLoaded(true);

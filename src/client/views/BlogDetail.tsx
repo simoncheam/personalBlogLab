@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { BlogTagsJoined } from '../client_types'
+import { APIService } from '../services/APIService';
 
 //import client types
 
@@ -18,8 +19,10 @@ const BlogDetail = () => {
 
     //useEffect
     useEffect(() => {
-        fetch(`/api/blogs/${blog_id}`)
-            .then(res => res.json())
+        APIService(`/api/blogs/${blog_id}`)
+
+        // fetch(`/api/blogs/${blog_id}`)
+        //     .then(res => res.json())
             .then(data => { //removed: (data: BlogTagsJoined)
 
                 data = data[0];  // destructuring object from array (removes meta data)

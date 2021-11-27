@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Blogs, BlogTagsJoined, Tags, Authors } from '../client_types';
 import Skeleton from 'react-loading-skeleton'
+import { APIService } from '../services/APIService';
 
 
 //import client types
@@ -23,8 +24,9 @@ const BrowseAuthors = () => {
 
     useEffect(() => {
 
-        fetch('/api/authors')
-            .then(res => res.json())
+        APIService(`/api/authors`)
+        // fetch('/api/authors')
+        //     .then(res => res.json())
             .then((t) => {
                 setAuthors(t)
             })
@@ -35,9 +37,9 @@ const BrowseAuthors = () => {
     useEffect(() => {
 
         if (!selectedAuthorId) { return }
-
-        fetch(`/api/blogs/browseauthors/${selectedAuthorId}`)
-            .then(res => res.json())
+        APIService(`/api/blogs/browseauthors/${selectedAuthorId}`)
+        // fetch(`/api/blogs/browseauthors/${selectedAuthorId}`)
+        //     .then(res => res.json())
             .then(data => {
                 setAllBlogs(data[0])
                 setHasLoaded(true);

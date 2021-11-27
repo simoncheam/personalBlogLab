@@ -30,6 +30,9 @@ const Navbar = () => {
             <Link type="button" className="m-2 btn btn-outline-primary" to="/login">
                 Login
             </Link>
+            <Link type="button" className="m-2 btn btn-outline-danger" to="/private">
+                Private
+            </Link>
 
 
 

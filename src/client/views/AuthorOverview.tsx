@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Blogs, Authors, Tags } from '../client_types'
+import { APIService } from '../services/APIService';
 
 //import client types
 
@@ -18,8 +19,11 @@ const AuthorOverview = () => {
 
     //useEffect
     useEffect(() => {
-        fetch('/api/authors')
-            .then(res => res.json())
+        APIService('/api/authors')
+
+
+        // fetch('/api/authors')
+        //     .then(res => res.json())
             .then(a => setAuthors(a))
             .catch(e => console.log(e))
     }, []);

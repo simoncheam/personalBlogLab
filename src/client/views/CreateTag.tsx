@@ -1,24 +1,19 @@
 import * as React from 'react';
-
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { Blogs, Authors, Tags } from '../client_types'
+import { Tags } from '../client_types'
+import { APIService } from '../services/APIService';
 
 //import client types
 
 const CreateTag = () => {
 
     const pizza = useRef(null);
-
     let navigate = useNavigate();
 
     // set author state
-
     const [tags, setTags] = useState<Tags[]>([]);
     const [new_tag_name, setNewTag_name] = useState("");
-
-    const TOKEN_KEY = 'token';
-    const token = localStorage.getItem(TOKEN_KEY);
 
     const handleSubmitButton = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -28,37 +23,10 @@ const CreateTag = () => {
         //Question: what is the best way to alert user of duplicate entry attempt? 500=>check entry?
         //the table Tag name is unique so it does not allow it
 
-
-        fetch("/api/tags", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                name: new_tag_name
-            })
+        //@ts-ignore
+        APIService(`/api/tags`, 'POST', {
+            name: new_tag_name
         })
-            .then(async res => {
-                const data = await res.json()
-
-                if (res.status === 500) {
-                    alert('Check your entry and try again!')
-                    return console.log(data.message);
-                }
-
-                if (!res.ok) {
-                    console.log('res is NOT OK');
-
-                    alert(data.message)
-                    console.log(data.message);
-                    navigate(`/login`)
-                    return;
-                }
-                console.log(data.message);
-                return;
-            }
-            )
             .then(data => {
                 navigate(`/create`)
             })
@@ -68,8 +36,7 @@ const CreateTag = () => {
     };
     //useEffect
     useEffect(() => {
-        fetch('/api/tags')
-            .then(res => res.json())
+        APIService('/api/tags')
             .then(t => setTags(t))
             .catch(e => console.log(e))
     }, []);
