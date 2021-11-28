@@ -13,7 +13,7 @@ export function tokenCheck(req: ReqUser, res: Response, next: NextFunction) {
             return next(err)
         }
 
-        if (info) { // if toke is not good
+        if (info) { // if token is not good
             return res.status(401).json({
                 message: "Error while authenticating, please log in again before retrying.",
                 error: info.message
@@ -25,7 +25,7 @@ export function tokenCheck(req: ReqUser, res: Response, next: NextFunction) {
         }
 
         if (user) {
-
+            console.log('TOKEN IS GOOD!');
             req.user = user;
             delete req.user.password;
             

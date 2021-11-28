@@ -25,8 +25,7 @@ const BrowseAuthors = () => {
     useEffect(() => {
 
         APIService(`/api/authors`)
-        // fetch('/api/authors')
-        //     .then(res => res.json())
+
             .then((t) => {
                 setAuthors(t)
             })
@@ -38,8 +37,7 @@ const BrowseAuthors = () => {
 
         if (!selectedAuthorId) { return }
         APIService(`/api/blogs/browseauthors/${selectedAuthorId}`)
-        // fetch(`/api/blogs/browseauthors/${selectedAuthorId}`)
-        //     .then(res => res.json())
+
             .then(data => {
                 setAllBlogs(data[0])
                 setHasLoaded(true);

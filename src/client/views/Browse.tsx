@@ -23,8 +23,6 @@ const Browse = () => {
 
         APIService(`/api/tags`)
 
-        // fetch('/api/tags')
-        //     .then(res => res.json())
             .then((t) => {
                 setTag(t)
             })
@@ -36,8 +34,6 @@ const Browse = () => {
         if (!selectedTagId) { return }
         APIService(`/api/blogs/browse/${selectedTagId}`)
 
-        // fetch(`/api/blogs/browse/${selectedTagId}`)
-        //     .then(res => res.json())
             .then(data => {
                 setAllBlogs(data[0])
                 setHasLoaded(true);

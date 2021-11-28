@@ -1,7 +1,6 @@
 export const TOKEN_KEY = 'token';
 
-export async function APIService<T = any>(uri: string, method: string = 'GET', data?: null)
-{
+export async function APIService<T = any>(uri: string, method: string = 'GET', data?: null) {
 
     const TOKEN = localStorage.getItem(TOKEN_KEY);
 
@@ -13,13 +12,13 @@ export async function APIService<T = any>(uri: string, method: string = 'GET', d
         method,
         headers,
         body: JSON.stringify(data)
-    }
+    };
 
-    if(TOKEN){
+    if (TOKEN) {
         headers['Authorization'] = `Bearer ${TOKEN}`;
     }
 
-    if(method === 'GET'){
+    if (method === 'GET') {
         delete headers['Content-Type'];
         delete fetchOptions.body;
     }
@@ -50,18 +49,18 @@ export async function APIService<T = any>(uri: string, method: string = 'GET', d
         }
 
 
-        
+
     } catch (error) {
         console.error('[error in APIService]', error.message);
         throw error;
-        
+
     }
 
 
 }
 
 interface IFetchOptions {
-    method: string;
+    method?: string;
     headers?: HeadersInit;
     body?: string;
 }

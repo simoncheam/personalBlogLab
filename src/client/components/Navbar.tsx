@@ -18,15 +18,15 @@ const Navbar = () => {
             <Link type="button" className="m-2 btn btn-outline-primary" to="/register">
                 Register
             </Link>
-            <Link type="button" className="m-2 btn btn-outline-primary" to="/authors">
+            {/* <Link type="button" className="m-2 btn btn-outline-primary" to="/authors">
                 Authors
-            </Link>
+            </Link> */}
             <Link type="button" className="m-2 btn btn-outline-primary" to="/donate">
                 Donate
             </Link>
-            <Link type="button" className="m-2 btn btn-outline-primary" to="/vip">
+            {/* <Link type="button" className="m-2 btn btn-outline-primary" to="/vip">
                 VIP
-            </Link>
+            </Link> */}
             <Link type="button" className="m-2 btn btn-outline-primary" to="/login">
                 Login
             </Link>

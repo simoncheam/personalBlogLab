@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Blogs, Authors, Tags } from '../client_types'
-
+import { APIService } from '../services/APIService';
 
 
 const Register = () => {
@@ -18,54 +18,27 @@ const Register = () => {
         e.preventDefault();
 
         if (!author_name || !author_email || author_password == null)
-            return alert('🤬 Fill out the god damn fields! Not a good start to your blogging career🤦🏻‍♂️');
+            return alert('🙄 Fill out the fields please! Not a good start to your blogging career🤦🏻‍♂️');
 
+        //@ts-ignore
+        APIService("/auth/register", 'POST', {
+            name: author_name,
+            email: author_email,
+            password: author_password
 
-
-        fetch("/auth/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                name: author_name,
-                email: author_email,
-                password: author_password
-            })
         })
-            .then(async res => {
-
-                const data = await res.json()
-
-                if (res.ok) {
-
-                    //@ts-ignore
-                    const { token } = await res.json;
-                    localStorage.setItem('token', token)
-                    console.log('Successful registration');
-
-                    return data;
-
-                }
-
-                return res.json()
-            }
-
-            )
             .then(data => {
-
-                //success => push to create page
 
                 // !!! insert react-bootstrap toast?
                 alert('Welcome!')
 
                 localStorage.setItem('token', data.token)
                 navigate(`/create`)
-                console.log(data);
+
 
             })
-            .catch(these_hands => {
-                console.log(these_hands)
+            .catch(e => {
+                console.log(e)
             })
     };
 

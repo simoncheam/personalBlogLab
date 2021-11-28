@@ -10,8 +10,6 @@ router.post('/', async (req, res) =>{
 
     const newUser = req.body;
 
-    
-
     try {
         
         //create new hash

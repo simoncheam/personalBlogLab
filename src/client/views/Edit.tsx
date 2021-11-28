@@ -3,8 +3,7 @@ import { useState, useEffect } from 'react';
 import { Routes, Route, useParams, useNavigate } from "react-router-dom";
 import { database_config } from '../../server/config';
 import { Blogs, Authors, Tags, BlogTags, BlogTagsJoined } from '../client_types'
-
-
+import { APIService, TOKEN_KEY } from '../services/APIService';
 
 const Edit = () => {
     let params = useParams();
@@ -30,44 +29,38 @@ const Edit = () => {
     const [selectedTagId, setSelectedTagId] = useState(0);
 
 
-    const TOKEN_KEY = 'token';
     const token = localStorage.getItem(TOKEN_KEY);
+    localStorage.setItem(TOKEN_KEY, token)
 
     // const handleUpdate
     const handleUpdate = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
 
+        //const TOKEN_KEY imported from APIService; token defined
+        const token = localStorage.getItem(TOKEN_KEY);
+        localStorage.setItem(TOKEN_KEY, token)
+
+        console.log(token);
+
         // input validation
 
+        //Q: What is the best way to set previous tag selection as the current state? If tag is not select, the blog will update, but returns 500 error for some reason.
+
+        if (!blog_content || !blog_title || !selectedTagId) return alert('please complete all fields to confirm your update (check tag selection)') // need UI update
+
         // BLOG - PUT
-        fetch(`/api/blogs/${blog_id}`, {
-            method: 'PUT',
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                title: blog_title,
-                content: blog_content,
-                tagid: selectedTagId
-            })
+
+        //@ts-ignore
+        APIService(`/api/blogs/${blog_id}`, 'PUT', {
+            title: blog_title,
+            content: blog_content,
+            tagid: selectedTagId
+
         })
-            .then(res => {
-
-                if (!res.ok) {
-                    alert('BAD BAD BAD! not authorized to edit!')
-
-                    navigate(`/login`)
-                    return
-                }
-                console.log('EDIT Res is good!');
-                return res.json()
-            }
-
-            )
             .then(data => {
                 navigate(`/blogs/${blog_id}`)
                 console.log(data);
+
             })
             .catch(e => console.log(e))
     }
@@ -77,30 +70,16 @@ const Edit = () => {
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
+        const token = localStorage.getItem(TOKEN_KEY);
+
+        console.log(token);
+        localStorage.setItem(TOKEN_KEY, token)
+
         if (confirm('Are you sure?')) {
 
         }
-        fetch(`/api/blogs/${blog_id}`, {
-            method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        })
-            .then(res => {
-
-                if (!res.ok) {
-                    alert('BAD BAD BAD! not authorized!')
-                    console.log('Not authorized to delete, bitch!');
-                    navigate(`/login`)
-
-                    return
-                }
-                console.log('Res is good!');
-                return res.json();
-
-            }
-
-            )
+        APIService(`/api/blogs/${blog_id}`, 'DELETE')
+           
             .then(() => {
                 navigate(`/`)
 
@@ -110,12 +89,12 @@ const Edit = () => {
 
     //useEffect - blog specific
     useEffect(() => {
-        fetch(`/api/blogs/${blog_id}`)
-            .then(res => res.json())
+
+        APIService(`/api/blogs/${blog_id}`)
             .then(data => {  //had to remove:(data: BlogTagsJoined) due to error
                 data = data[0];
                 setBlog(data)
-                console.log(blog);
+
 
                 // setblog state - tag, title, content
                 setBlogTag(data.tag_name)
@@ -125,19 +104,16 @@ const Edit = () => {
                 //author state - name 
                 setAuthor(data.a_name)
                 setSelectedAuthorId(data.a_id)
-
             })
             .catch(e => console.log(e))
 
-        fetch('/api/authors')
-            .then(res => res.json())
+        APIService('/api/authors')
             .then((a) => {
                 setAuthors(a)
             })
             .catch(e => console.log(e))
 
-        fetch('/api/tags')
-            .then(res => res.json())
+        APIService('/api/tags')
             .then((t) => {
                 setTag(t)
             })
@@ -147,11 +123,6 @@ const Edit = () => {
         return <h1>Loading...</h1>
     }
 
-    // handleAuthorSelectUpdate
-    const handleAuthorSelectUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        console.log(e.target.value);
-        setSelectedAuthorId(Number(e.target.value))
-    };
 
     // handleTagSelectUpdate
     const handleTagSelectUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -167,7 +138,7 @@ const Edit = () => {
                 <div className="form-group col-6">
 
 
-                    
+
 
                     {/* ----------- select Tag ----------- */}
 

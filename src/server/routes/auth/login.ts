@@ -29,20 +29,15 @@ router.post('/', passport.authenticate('local'), async ( req: ReqUser, res) =>{
 
 //create login route: Do I need this?
 
-router.post('/login', async (req,res)=>{
-    const {email, password} = req.body;
+// router.post('/login', async (req,res)=>{
+//     const {email, password} = req.body;
+//     const [user] = await db_authors.getUserBy('email', email);
 
-    const [user] = await db_authors.getUserBy('email', email);
-
-    if(!user){
-        res.status(400).json({message: "invalid credentials"});
-    }
-    res.status(200).json({message: "successful login!" });
-    
-
-
-
-})
+//     if(!user){
+//         res.status(400).json({message: "invalid credentials"});
+//     }
+//     res.status(200).json({message: "successful login!" });
+// })
 
 
 export default router;

@@ -7,6 +7,7 @@ import Skeleton from 'react-loading-skeleton'
 // CardElement is a combined imput of a user's CC number, exp date, and CVC
 // you can choose to import each piece individually to customize your form
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { APIService } from '../services/APIService';
 
 
 
@@ -74,18 +75,24 @@ const Donate = (props: DonateProps) => {
 
         } else {
             // POST the create payment method to out own endpoint
-            const res = await fetch('/api/donate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    amount,
-                    paymentMethod
-                })
-            });
-            const successfulPayment = await res.json();
+            //const res = await 
+        //@ts-ignore
+            
+            APIService('/api/donate', 'POST', {
+                amount,
+                paymentMethod
 
-            console.log(successfulPayment);
-            alert('Thank you so much!🙏😊') 
+            })
+            .then(data=>{
+                
+               // const successfulPayment = await res.json();
+                
+                console.log(data);
+                alert('Thank you so much!🙏😊') 
+                navigate(`/`)
+            } )
+            .catch(e=> console.log(e))
+            
         }
 
     }

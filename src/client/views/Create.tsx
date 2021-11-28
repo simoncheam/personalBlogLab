@@ -21,8 +21,6 @@ const Create = () => {
 
     useEffect(() => {
         APIService(`/api/tags`)
-            // fetch('/api/tags')
-            //     .then(res => res.json())
             .then((t) => {
                 setTag(t)
             })
@@ -44,8 +42,8 @@ const Create = () => {
         //const TOKEN_KEY imported from APIService; token defined
         const token = localStorage.getItem(TOKEN_KEY);
 
-        console.log(token);
         localStorage.setItem(TOKEN_KEY, token)
+        console.log(token);
 
         //input val
         if (!blog_content || !blog_title || !selectedTagId) return alert('🤬 Fill out the god damn fields please:)')

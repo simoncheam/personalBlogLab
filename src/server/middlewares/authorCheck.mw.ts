@@ -26,14 +26,7 @@ export async function authorCheck  (req: ReqUser, res: Response, next: NextFunct
         let authorid = a_id;
         
         console.log(`author id is: ${authorid}`); //works!!! FROM BLOG DB
-        //console.log(req.user.userid);
-        console.log(`req.user is:`); //??? undefined?
-        console.log(req.user); //??? undefined?
-
-        console.log(`req.user.userid:`); //??? undefined?
-        console.log(req.user.userid); //??? undefined?
-
-        //userid is req.user.userid
+        
 
         
         //retrieve userid from req.user

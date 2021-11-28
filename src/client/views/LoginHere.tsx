@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { useParams,  Link, useNavigate } from "react-router-dom";
-import { TOKEN_KEY } from '../services/api-service';
-import { APIService } from '../services/APIService';
+import { APIService, TOKEN_KEY } from '../services/APIService';
 
 const LoginHere = (props: LoginProps) => {
     let navigate = useNavigate();

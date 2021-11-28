@@ -21,9 +21,6 @@ const AuthorOverview = () => {
     useEffect(() => {
         APIService('/api/authors')
 
-
-        // fetch('/api/authors')
-        //     .then(res => res.json())
             .then(a => setAuthors(a))
             .catch(e => console.log(e))
     }, []);

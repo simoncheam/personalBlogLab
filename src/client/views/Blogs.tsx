@@ -14,8 +14,6 @@ const Blogs = () => {
 
         APIService(`/api/blogs`)
 
-        // fetch(`/api/blogs`)
-        //     .then(res => res.json())
             .then(data => {
                 setBlogs(data);
             })

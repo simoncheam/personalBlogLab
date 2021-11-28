@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Blogs, BlogTagsJoined, Tags } from '../client_types';
 import Skeleton from 'react-loading-skeleton'
+import { APIService, TOKEN_KEY } from '../services/APIService';
 
 
 const OptIn = () => {
@@ -14,12 +15,17 @@ const OptIn = () => {
 
     const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        
 
-        const res = await fetch('/api/apimailgun/contact', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
+        const token = localStorage.getItem(TOKEN_KEY);
+
+        console.log(token);
+        localStorage.setItem(TOKEN_KEY, token)
+        
+        
+        const res = await 
+        //@ts-ignore
+        APIService('apimailgun/contact', 'POST', {
+       
 
                 from: `Hey_${from}<+${subject}+@ishere.yum>`,
                 subject: `Your ${subject} is on the way!😜`,
@@ -37,11 +43,11 @@ const OptIn = () => {
                 `
             })
             
-        })
-        .then(res=>res.json())
-        .then(result=>{
+        
+        // .then(res=>res.json())
+        .then(res=>{
             
-            console.log(result);
+            console.log(res);
             navigate(`/welcome`)
         })
         .catch(e => console.log(e))
@@ -68,12 +74,12 @@ const OptIn = () => {
                                     onChange={e => setFrom(e.target.value)}
                                 />
 
-                                <input  className="form-control mb-3" placeholder="What's your favorite food?"
+                                <input  className="form-control mb-3" placeholder="What's your favorite food? (only 1 food item allowed please:)"
                                     value={subject}
                                     onChange={e => setSubject(e.target.value)}
                                 />
 
-                                <textarea className="form-control mb-3" placeholder="Anything else you'd like to share with us?"
+                                <textarea className="form-control mb-3" placeholder="What's your favorite quote or saying?"
                                     value={message}
                                     onChange={e => setMessage(e.target.value)}
                                 />

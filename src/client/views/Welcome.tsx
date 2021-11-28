@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useParams, Link } from "react-router-dom";
 import { Blogs, BlogTagsJoined } from '../client_types'
+import { APIService } from '../services/APIService';
 
 
 const Welcome = () => {
@@ -10,8 +11,8 @@ const Welcome = () => {
 
    
     useEffect(() => {
-        fetch(`/api/blogs`)
-            .then(res => res.json())
+
+        APIService(`/api/blogs`)
             .then(data => {
                 setBlogs(data);
             })

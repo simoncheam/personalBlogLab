@@ -131,7 +131,7 @@ router.post('/', tokenCheck, async (req: ReqUser, res) => {
 router.put('/:id', tokenCheck, authorCheck, async (req: ReqUser, res) => {
 
     const { title, content, tagid } = req.body;
-    console.log(`req.userid : ${req.userid}`);
+    console.log(`req.user.userid : ${req.user.userid}`);
     const authorid = req.user.userid;
 
     console.log({ title, content, authorid });// WORKS!
@@ -142,9 +142,10 @@ router.put('/:id', tokenCheck, authorCheck, async (req: ReqUser, res) => {
         return res.status(400).json({ message: "Fill out everything!" })
     }
 
+    // Something is messed up here:
     try {
         const id = Number(req.params.id);
-        const resultz = await blogz.update({ title, content, authorid }, id);
+        await blogz.update({ title, content, authorid }, id);
         const blogid = id;
 
         await blogtagz.update(tagid, blogid)
