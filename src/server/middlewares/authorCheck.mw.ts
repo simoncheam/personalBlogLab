@@ -1,5 +1,6 @@
 
 import { Request, Response, NextFunction } from 'express';
+import { BlogTagsJoined } from '../types'
 import blogs_db from '../../server/database/queries/blogs';
 import { ReqUser } from '../types';
 
@@ -17,10 +18,10 @@ export async function authorCheck  (req: ReqUser, res: Response, next: NextFunct
         const blog_id = req.params.id;
         console.log(`Blog ID is : ${blog_id}`); //this works
 
-        let [one_blog] =  await blogs_db.get_one_by_id(Number(blog_id));
+        const [oneBlog] =  await blogs_db.get_one_by_id(Number(blog_id));
     
         console.log('one blog: ');
-        one_blog = one_blog[0];
+        const one_blog: BlogTagsJoined = oneBlog[0];
         console.log(one_blog);
         const {a_id} = one_blog;
         let authorid = a_id;
