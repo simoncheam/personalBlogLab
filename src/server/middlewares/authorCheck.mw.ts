@@ -18,10 +18,10 @@ export async function authorCheck  (req: ReqUser, res: Response, next: NextFunct
         const blog_id = req.params.id;
         console.log(`Blog ID is : ${blog_id}`); //this works
 
-        const [oneBlog] =  await blogs_db.get_one_by_id(Number(blog_id));
+        const [one_blog] =  (await blogs_db.get_one_by_id(Number(blog_id)))[0]; //grab item at index pos 0
     
-        console.log('one blog: ');
-        const one_blog: BlogTagsJoined = oneBlog[0];
+        
+        
         console.log(one_blog);
         const {a_id} = one_blog;
         let authorid = a_id;

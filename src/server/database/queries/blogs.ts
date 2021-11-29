@@ -1,5 +1,6 @@
 import {TalkToMySQL} from "../index";
 import {Blogs, BlogTags, BlogTagsJoined} from "../../types";
+import { MysqlResponse } from "../models";
 
 
 // const get_all = () => TalkToMySQL<BlogTagsJoined[]>
@@ -27,7 +28,7 @@ const get_one_by_id = (id:number)=>TalkToMySQL<BlogTagsJoined[]>
 */
 
 // NEW Stored Procedure:
-const get_one_by_id = (id:number)=>TalkToMySQL<BlogTagsJoined[]>
+const get_one_by_id = (id:number)=>TalkToMySQL<[BlogTagsJoined[], MysqlResponse]>
 (`CALL spGetBlogById(?) `,[id]);
 
 // NOTES:  FROM MYSQL - SP creation:
