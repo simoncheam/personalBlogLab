@@ -24,6 +24,7 @@ import PrivateRoute from './components/PrivateRoute';
 import OtherSecret from './views/OtherSecret';
 import SecretPage1 from './views/SecretPage1';
 import SecretPage2 from './views/SecretPage2';
+import CoolStuff from './views/CoolStuff';
 
 
 const stripe = loadStripe('pk_test_51JrmRQKRuAnoTcjnMIgGXWelfVNUongEu9Ja2mkoFoIJseO0x7AsD9PqIkk3IjnDrjj7z67fKPzrhlBqsANseyi700PDjNRoox');
@@ -66,6 +67,12 @@ const App = () => {
 					{/* <Route path="/vip" element={<OptIn />}>
 
 					</Route> */}
+
+					{/* login */}
+					<Route path="/cool" element={<CoolStuff/>}>
+
+					</Route>
+
 
 					{/* login */}
 					<Route path="/login" element={<LoginHere />}>
