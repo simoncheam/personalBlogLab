@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { APIService, TOKEN_KEY } from '../services/APIService';
 
 
-//Q: need to clarify meaning of "...rest" not used here
+// need to clarify meaning of "...rest" not used here// not needed except when we have other props
 
 const PrivateRoute = ({ children, ...rest }: PrivateRouteProps) => {
 

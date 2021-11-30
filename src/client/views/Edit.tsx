@@ -104,6 +104,7 @@ const Edit = () => {
                 //author state - name 
                 setAuthor(data.a_name)
                 setSelectedAuthorId(data.a_id)
+                setSelectedTagId(data.tag_id)
             })
             .catch(e => console.log(e))
 
@@ -143,11 +144,11 @@ const Edit = () => {
                     {/* ----------- select Tag ----------- */}
 
                     <label >Update Tag:</label>
-                    <select onChange={handleTagSelectUpdate} className="form-control m-2">
+                    <select value ={selectedTagId} onChange={handleTagSelectUpdate} className="form-control m-2">
                         <div className="input-group-prepend">
                             <span className="input-group-text" id="basic-addon1">@</span>
                         </div>
-                        <option value={blog_tag}>Current: {blog_tag} (please select update below)</option>
+                        <option value={0}>Current: {blog_tag} (please select update below)</option>
 
                         {tag.map(t => (
                             <option key={`author-option-${t.id}`} value={t.id}>

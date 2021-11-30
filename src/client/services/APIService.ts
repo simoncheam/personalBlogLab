@@ -46,6 +46,8 @@ export async function APIService<T = any>(uri: string, method: string = 'GET', d
 
         if (res.ok) {
             return <T>await res.json();
+        } else {
+            throw new Error("Something else happened check the log!")
         }
 
 
