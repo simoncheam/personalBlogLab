@@ -62,7 +62,10 @@ const Edit = () => {
                 console.log(data);
 
             })
-            .catch(e => console.log(e))
+            .catch(e => {
+                console.log(e)
+                alert(e)
+            })
     }
 
     // const handleDelete
@@ -79,12 +82,15 @@ const Edit = () => {
 
         }
         APIService(`/api/blogs/${blog_id}`, 'DELETE')
-           
+
             .then(() => {
                 navigate(`/`)
 
             })
-            .catch(e => console.log(e))
+            .catch(e => {
+                console.log(e)
+                alert(e)
+            })
     }
 
     //useEffect - blog specific
@@ -144,7 +150,7 @@ const Edit = () => {
                     {/* ----------- select Tag ----------- */}
 
                     <label >Update Tag:</label>
-                    <select value ={selectedTagId} onChange={handleTagSelectUpdate} className="form-control m-2">
+                    <select value={selectedTagId} onChange={handleTagSelectUpdate} className="form-control m-2">
                         <div className="input-group-prepend">
                             <span className="input-group-text" id="basic-addon1">@</span>
                         </div>

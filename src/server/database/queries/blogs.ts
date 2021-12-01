@@ -70,9 +70,15 @@ const create = (new_blog: Blogs) => {
    return TalkToMySQL(`INSERT INTO Blogs SET ?`, [new_blog]); 
 }
 
-const update = (blog: Blogs, id: Blogs['id'])=>TalkToMySQL("UPDATE Blogs SET ? WHERE id=?", [blog, id]);
+// original
+// const update = (blog: Blogs, id: Blogs['id'])=>TalkToMySQL("UPDATE Blogs SET ? WHERE id=?", [blog, id]);
 
-const destroy = (id: Blogs['id'])=> TalkToMySQL("DELETE FROM Blogs WHERE id=?", [id]);
+// updated with authorid filter
+const update = (blog: Blogs, id: Blogs['id'], authorid: number)=>TalkToMySQL("UPDATE Blogs SET ? WHERE id=? AND authorid =?", [blog, id, authorid]);
+
+
+
+const destroy = (id: Blogs['id'], authorid: number )=> TalkToMySQL("DELETE FROM Blogs WHERE id=? AND authorid = ?", [id, authorid]);
 
 
 

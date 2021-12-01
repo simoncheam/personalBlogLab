@@ -35,6 +35,12 @@ export async function APIService<T = any>(uri: string, method: string = 'GET', d
         if (res.status === 401) {
             throw new Error('no token, expired token, or server could not validate token');
         }
+        if (res.status === 403) {
+            //alert("You are not authorized to edit this blog. You can only edit blogs you create.")
+            throw new Error('Not authorized to perform this action.');
+        }
+
+
 
         if (res.status === 404) {
             throw new Error('the server endpoint path was not found');

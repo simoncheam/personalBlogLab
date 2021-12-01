@@ -40,7 +40,8 @@ export async function authorCheck  (req: ReqUser, res: Response, next: NextFunct
             // Checks if user is the author
         if (!req.user || userid !== authorid) {
             console.log('invalid OR userid does not match author id!');
-            return res.redirect('/login')
+            
+            return res.redirect('/login')    // Change! send 403 instead!
 
         }
         console.log('AUTHORIZED! This should work!');

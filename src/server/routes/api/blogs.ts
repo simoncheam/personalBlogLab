@@ -4,6 +4,7 @@ import blogtagz from '../../database/queries/blogtags';
 import { Blogs, Authors, BlogTagsJoined, BlogTags, ReqUser } from '../../types'
 import { tokenCheck } from '../../middlewares/tokenCheck.mw'
 import { authorCheck } from '../../middlewares/authorCheck.mw'
+import blogs from '../../database/queries/blogs';
 
 
 const router = express.Router();
@@ -128,13 +129,29 @@ router.post('/', tokenCheck, async (req: ReqUser, res) => {
 
 // update blog
 
-router.put('/:id', tokenCheck, authorCheck, async (req: ReqUser, res) => {
+router.put('/:id', tokenCheck, async (req: ReqUser, res) => {
 
     const { title, content, tagid } = req.body;
     console.log(`req.user.userid : ${req.user.userid}`);
+
+    //define authorid by req.user
     const authorid = req.user.userid;
 
-    console.log({ title, content, authorid });// WORKS!
+    //define blog authorid by blog query
+    const blog_id = req.params.id;
+    const [one_blog] = (await blogz.get_one_by_id(Number(blog_id)))[0]; //grab item at index pos 0
+
+    const { a_id } = one_blog;
+    let blog_authorid = a_id;
+
+
+    if (authorid != blog_authorid){
+        return res.status(403).json({ message: "You are not authorized to edit this blog. You can only edit blogs you create." })
+
+   
+    }
+
+        console.log({ title, content, authorid });// WORKS!
     //console.log({ title, content, a_id });
     console.log('INSIDE BLOG PUT ROUTER!');
 
@@ -145,7 +162,7 @@ router.put('/:id', tokenCheck, authorCheck, async (req: ReqUser, res) => {
     // Something is messed up here:
     try {
         const id = Number(req.params.id);
-        await blogz.update({ title, content, authorid }, id);
+        await blogz.update({ title, content, authorid }, id, authorid);
         const blogid = id;
 
         await blogtagz.update(tagid, blogid)
@@ -165,11 +182,27 @@ router.put('/:id', tokenCheck, authorCheck, async (req: ReqUser, res) => {
 
 // delete
 
-router.delete('/:id', tokenCheck, authorCheck, async (req, res) => {
+router.delete('/:id', tokenCheck, async (req: ReqUser, res) => {
 
     const id = Number(req.params.id);
 
     const { tagid } = req.body;
+
+    //define authorid by req.user
+    const authorid = req.user.userid;
+
+    //define blog authorid by blog query
+    const blog_id = req.params.id;
+    const [one_blog] = (await blogz.get_one_by_id(Number(blog_id)))[0]; //grab item at index pos 0
+
+    const { a_id } = one_blog;
+    let blog_authorid = a_id;
+
+    if (authorid != blog_authorid){
+        return res.status(403).json({ message: "You are not authorized to edit this blog. You can only edit blogs you create." })
+
+    }
+
 
 
 
@@ -179,7 +212,7 @@ router.delete('/:id', tokenCheck, authorCheck, async (req, res) => {
 
         await blogtagz.destroy(id) //needs to be deleted first tagid: BlogTags['tagid'], blogid: BlogTags['blogid']
 
-        await blogz.destroy(id)  /// need to delete blogtag id AND blogid( need blogtag query to delete blogid)  , 
+        await blogz.destroy(id, authorid)  /// need to delete blogtag id AND blogid( need blogtag query to delete blogid)  , 
 
         res.status(200).json({ message: "Deleted Blog!" });
 
