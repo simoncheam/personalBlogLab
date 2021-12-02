@@ -1,5 +1,7 @@
 import { TalkToMySQL } from "../index";
 import { Tags, BlogTagsJoined, BlogTags } from "../../types";
+import {tokenCheck} from '../../middlewares/tokenCheck.mw'
+
 
 
 const get_all = () => TalkToMySQL<Tags[]>(

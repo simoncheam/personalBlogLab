@@ -11,11 +11,16 @@ const update = (author: Authors, id: Authors['id']) => TalkToMySQL('UPDATE Autho
 
 const destroy = (id: Authors['id']) => TalkToMySQL('DELETE FROM Authors WHERE id=?', [id]);
 
+const getUserBy = (column_name: string, value: string | number) =>
+    TalkToMySQL<Authors[]>("SELECT * FROM Authors WHERE ??=?", [column_name, value]);
+
+
 export default {
     get_all,
     get_one_by_id,
     create,
     update,
-    destroy
+    destroy,
+    getUserBy
 
 };

@@ -1,15 +1,18 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { useParams, useHistory, Link } from "react-router-dom";
+import { Routes, Route, useParams, useNavigate } from "react-router-dom";
 import { database_config } from '../../server/config';
 import { Blogs, Authors, Tags, BlogTags, BlogTagsJoined } from '../client_types'
-
+import { APIService, TOKEN_KEY } from '../services/APIService';
 
 const Edit = () => {
+    let params = useParams();
+    let navigate = useNavigate();
 
-    const { goBack } = useHistory();
-    const hist = useHistory();
-    const { blog_id } = useParams<{ blog_id: string }>();
+
+    //const { blog_id } = useParams<{ blog_id: string }>(); //old v5
+    const blog_id = params.blog_id; //useParams<{ blog_id: string }>(); //v6
+
 
     //State - Blog
     const [blog, setBlog] = useState<BlogTagsJoined>();
@@ -26,31 +29,43 @@ const Edit = () => {
     const [selectedTagId, setSelectedTagId] = useState(0);
 
 
+    const token = localStorage.getItem(TOKEN_KEY);
+    localStorage.setItem(TOKEN_KEY, token)
+
     // const handleUpdate
     const handleUpdate = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
 
+        //const TOKEN_KEY imported from APIService; token defined
+        const token = localStorage.getItem(TOKEN_KEY);
+        localStorage.setItem(TOKEN_KEY, token)
+
+        console.log(token);
+
         // input validation
 
+        //Q: What is the best way to set previous tag selection as the current state? If tag is not select, the blog will update, but returns 500 error for some reason.
+
+        if (!blog_content || !blog_title || !selectedTagId) return alert('please complete all fields to confirm your update (check tag selection)') // need UI update
+
         // BLOG - PUT
-        fetch(`/api/blogs/${blog_id}`, {
-            method: 'PUT',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                title: blog_title,
-                content: blog_content,
-                authorid: selectedAuthorId,
-                tagid: selectedTagId
-            })
+
+        //@ts-ignore
+        APIService(`/api/blogs/${blog_id}`, 'PUT', {
+            title: blog_title,
+            content: blog_content,
+            tagid: selectedTagId
+
         })
-            .then(res => res.json())
             .then(data => {
-                hist.push(`/blogs/${blog_id}`)
+                navigate(`/blogs/${blog_id}`)
                 console.log(data);
+
             })
-            .catch(e => console.log(e))
+            .catch(e => {
+                console.log(e)
+                alert(e)
+            })
     }
 
     // const handleDelete
@@ -58,26 +73,34 @@ const Edit = () => {
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
+        const token = localStorage.getItem(TOKEN_KEY);
+
+        console.log(token);
+        localStorage.setItem(TOKEN_KEY, token)
+
         if (confirm('Are you sure?')) {
-            console.log('delete blog confirmed');
+
         }
-        fetch(`/api/blogs/${blog_id}`, {
-            method: "DELETE",
-        })
-            .then(res => res.json())
+        APIService(`/api/blogs/${blog_id}`, 'DELETE')
+
             .then(() => {
-                hist.push(`/`)
+                navigate(`/`)
+
             })
-            .catch(e => console.log(e))
+            .catch(e => {
+                console.log(e)
+                alert(e)
+            })
     }
 
     //useEffect - blog specific
     useEffect(() => {
-        fetch(`/api/blogs/${blog_id}`)
-            .then(res => res.json())
-            .then((data: BlogTagsJoined) => {
+
+        APIService(`/api/blogs/${blog_id}`)
+            .then(data => {  //had to remove:(data: BlogTagsJoined) due to error
                 data = data[0];
                 setBlog(data)
+
 
                 // setblog state - tag, title, content
                 setBlogTag(data.tag_name)
@@ -86,18 +109,18 @@ const Edit = () => {
 
                 //author state - name 
                 setAuthor(data.a_name)
+                setSelectedAuthorId(data.a_id)
+                setSelectedTagId(data.tag_id)
             })
             .catch(e => console.log(e))
 
-        fetch('/api/authors')
-            .then(res => res.json())
+        APIService('/api/authors')
             .then((a) => {
                 setAuthors(a)
             })
             .catch(e => console.log(e))
 
-        fetch('/api/tags')
-            .then(res => res.json())
+        APIService('/api/tags')
             .then((t) => {
                 setTag(t)
             })
@@ -107,52 +130,31 @@ const Edit = () => {
         return <h1>Loading...</h1>
     }
 
-    // handleAuthorSelectUpdate
-    const handleAuthorSelectUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        console.log(e.target.value);
-        setSelectedAuthorId(Number(e.target.value))
-    };
 
     // handleTagSelectUpdate
     const handleTagSelectUpdate = (e: React.ChangeEvent<HTMLSelectElement>) => {
-
         setSelectedTagId(Number(e.target.value))
-        console.log(Number(e.target.value));
     };
-
 
 
     return (
         <>
-            <h1 className="display-3 m-3 text-center">👋 Hey, {author} Edit Your Blog! </h1>
+            <h1 className="display-3 m-3 text-center">👋 Hey, {author}, Edit Your Blog! </h1>
 
             <div className="row mt-5 justify-content-center">
                 <div className="form-group col-6">
 
-                    {/* ----------- select authorname ----------- */}
 
-                    <label >Update Author:</label>
-                    <select onChange={handleAuthorSelectUpdate} className="form-control m-2">
-                        <div className="input-group-prepend">
-                            <span className="input-group-text" id="basic-addon1">@</span>
-                        </div>
-                        <option  >Current: {author} (please select update below)</option>
 
-                        {authors.map(author => (
-                            <option key={`author-option-${author.id}`} value={author.id}>
-                                {author.name}
-                            </option>
-                        ))}
-                    </select>
 
                     {/* ----------- select Tag ----------- */}
 
                     <label >Update Tag:</label>
-                    <select onChange={handleTagSelectUpdate} className="form-control m-2">
+                    <select value={selectedTagId} onChange={handleTagSelectUpdate} className="form-control m-2">
                         <div className="input-group-prepend">
                             <span className="input-group-text" id="basic-addon1">@</span>
                         </div>
-                        <option value={blog_tag}>Current: {blog_tag} (please select update below)</option>
+                        <option value={0}>Current: {blog_tag} (please select update below)</option>
 
                         {tag.map(t => (
                             <option key={`author-option-${t.id}`} value={t.id}>
@@ -178,7 +180,7 @@ const Edit = () => {
 
                     {/* Buttons */}
                     <div className="m-2">
-                        <div onClick={goBack} className="btn mx-2 btn-primary">Go Back?</div>
+                        <div onClick={() => navigate(-1)} className="btn mx-2 btn-primary">Go Back?</div>
                         <button onClick={handleDelete} className="btn mx-2 btn-danger">Delete!</button>
                         <button onClick={handleUpdate} className="btn btn-Success">Save Updates!</button>
                     </div>

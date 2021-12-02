@@ -1,6 +1,5 @@
-# For Review: 
-- review useparams alternative with drop down?
-- react select implementation
+
+
 
 
 # REFERENCE MySQL Stored Procedures and Tables:
@@ -136,3 +135,30 @@ DELIMITER //;
 
 
 -- creating spGetBlogsByTagId(?)
+
+
+
+-- creating spGetBlogsByAuthorId(?) - 11/2 --!!! THIS WORKS!
+
+CALL spGetBlogsByAuthorId();
+SELECT * FROM Blogs;
+SELECT * FROM Authors;
+DELIMITER //
+CREATE PROCEDURE spGetBlogsByAuthorId(spauthorid INT)
+BEGIN
+	SELECT BlogTags.blogid as blog_id, BlogTags.tagid as tag_id ,b.title as title, b.content as content, b._created as blog_created,
+		Authors.id as a_id, Authors.name as a_name, Authors.email as a_email, t.name as tag_name, t._created as tag_created 
+		FROM BlogTags
+		JOIN Tags t
+		ON t.id=BlogTags.tagid
+		JOIN Blogs b
+		ON b.id=BlogTags.blogid
+		JOIN Authors
+		ON b.authorid=Authors.id
+			WHERE Authors.id=spauthorid
+            ORDER BY b._created DESC;
+END//
+
+DELIMITER //;
+
+

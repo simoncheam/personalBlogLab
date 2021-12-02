@@ -1,7 +1,10 @@
-import blogz from '../database/queries/blogs';
-import blogtagz from '../database/queries/blogtags';
 import * as express from 'express';
-import { Blogs, Authors, BlogTagsJoined, BlogTags } from '../types'
+import blogz from '../../database/queries/blogs';
+import blogtagz from '../../database/queries/blogtags';
+import { Blogs, Authors, BlogTagsJoined, BlogTags, ReqUser } from '../../types'
+import { tokenCheck } from '../../middlewares/tokenCheck.mw'
+import { authorCheck } from '../../middlewares/authorCheck.mw'
+import blogs from '../../database/queries/blogs';
 
 
 const router = express.Router();
@@ -38,13 +41,11 @@ router.get('/browseauthors/:authorid', async (req, res) => {
     const authorid = req.params.authorid;
 
     try {
-
         const all_blogs_by_author = await blogz.get_all_by_authorid(Number(authorid));
         res.status(200).json(all_blogs_by_author);
 
     } catch (error) {
         res.status(500).json({ message: "A server errors occurred", error: error.sqlMessage });
-
     }
 })
 
@@ -58,7 +59,6 @@ router.get('/browse/:tagid', async (req, res) => {
         const all_blogs_tagged = await blogz.get_all_by_tagid(Number(tagid));
         res.status(200).json(all_blogs_tagged);
 
-
     } catch (error) {
         res.status(500).json({ message: "A server errors occurred", error: error.sqlMessage });
     }
@@ -67,7 +67,6 @@ router.get('/browse/:tagid', async (req, res) => {
 
 
 // get one
-
 router.get('/:id', async (req, res) => {
 
     const id = req.params.id;
@@ -86,18 +85,30 @@ router.get('/:id', async (req, res) => {
 })
 
 // Create
+router.post('/', tokenCheck, async (req: ReqUser, res) => {
+    console.log('INSIDE POST BLOCK');
 
-router.post('/', async (req, res) => {
+    const authorid = req.user.userid;
+    const { tagid, title, content } = req.body;
 
-    
-    const { tagid, title, content, authorid } = req.body;
-    console.log('tagid:');
-    console.log(tagid);
+    console.log('req.user:');
+    console.log(req.user);
+
+
+    //This is it!
+    console.log('req.user.userid:');
+    console.log(req.user.userid);
+
+    console.log(`authorid is: ${authorid}`);
+
+    //const {token} = req.headers.authorization
+    console.log('Router -Post TOKEN CHECK HERE');
 
     //input validation
     if (!content || !title || !tagid) {  //    "authorid": 1,
         return res.status(400).json({ message: "Fill out everything!" })
     }
+
 
     try {
 
@@ -118,39 +129,81 @@ router.post('/', async (req, res) => {
 
 // update blog
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', tokenCheck, async (req: ReqUser, res) => {
 
-    const { title, content, authorid, tagid } = req.body; 
+    const { title, content, tagid } = req.body;
+    console.log(`req.user.userid : ${req.user.userid}`);
 
-    console.log({ title, content, authorid });
+    //define authorid by req.user
+    const authorid = req.user.userid;
+
+    //define blog authorid by blog query
+    const blog_id = req.params.id;
+    const [one_blog] = (await blogz.get_one_by_id(Number(blog_id)))[0]; //grab item at index pos 0
+
+    const { a_id } = one_blog;
+    let blog_authorid = a_id;
+
+
+    if (authorid != blog_authorid){
+        return res.status(403).json({ message: "You are not authorized to edit this blog. You can only edit blogs you create." })
+
+   
+    }
+
+        console.log({ title, content, authorid });// WORKS!
+    //console.log({ title, content, a_id });
+    console.log('INSIDE BLOG PUT ROUTER!');
 
     if (!title || !content || !authorid) {
         return res.status(400).json({ message: "Fill out everything!" })
     }
 
+    // Something is messed up here:
     try {
         const id = Number(req.params.id);
-        const resultz = await blogz.update({ title, content, authorid }, id);
+        await blogz.update({ title, content, authorid }, id, authorid);
         const blogid = id;
+
         await blogtagz.update(tagid, blogid)
+
+        console.log('INSIDE TRY BLOCK - BLOG PUT ROUTER!');
 
         res.status(201).json({ message: "Updated Blog!" });
 
     } catch (error) {
+        console.log('INSIDE CATCH BLOCK - BLOG PUT ROUTER!');
+
         res.status(500).json({ message: "A server errors occurred", error: error.sqlMessage });
     }
 });
 
 
 
-
 // delete
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', tokenCheck, async (req: ReqUser, res) => {
 
     const id = Number(req.params.id);
 
     const { tagid } = req.body;
+
+    //define authorid by req.user
+    const authorid = req.user.userid;
+
+    //define blog authorid by blog query
+    const blog_id = req.params.id;
+    const [one_blog] = (await blogz.get_one_by_id(Number(blog_id)))[0]; //grab item at index pos 0
+
+    const { a_id } = one_blog;
+    let blog_authorid = a_id;
+
+    if (authorid != blog_authorid){
+        return res.status(403).json({ message: "You are not authorized to edit this blog. You can only edit blogs you create." })
+
+    }
+
+
 
 
     try {
@@ -159,7 +212,7 @@ router.delete('/:id', async (req, res) => {
 
         await blogtagz.destroy(id) //needs to be deleted first tagid: BlogTags['tagid'], blogid: BlogTags['blogid']
 
-        await blogz.destroy(id)  /// need to delete blogtag id AND blogid( need blogtag query to delete blogid)  , 
+        await blogz.destroy(id, authorid)  /// need to delete blogtag id AND blogid( need blogtag query to delete blogid)  , 
 
         res.status(200).json({ message: "Deleted Blog!" });
 

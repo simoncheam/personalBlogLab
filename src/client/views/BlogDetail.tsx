@@ -1,23 +1,28 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { useParams, useHistory, Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { BlogTagsJoined } from '../client_types'
+import { APIService } from '../services/APIService';
 
 //import client types
 
 const BlogDetail = () => {
 
-    const { blog_id } = useParams<{ blog_id: string }>();
+    let params = useParams();
+    let navigate = useNavigate();
+    const blog_id = params.blog_id;
+
+
+    //const { blog_id } = useParams<{ blog_id: string }>();
     const [blog, setBlog] = useState<BlogTagsJoined>();
     const [blog_tag, setBlogTag] = useState<string>();
-    
-    const { goBack } = useHistory();
-    
+
     //useEffect
     useEffect(() => {
-        fetch(`/api/blogs/${blog_id}`)
-            .then(res => res.json())
-            .then((data: BlogTagsJoined) => {
+        APIService(`/api/blogs/${blog_id}`)
+
+       
+            .then(data => { //removed: (data: BlogTagsJoined)
 
                 data = data[0];  // destructuring object from array (removes meta data)
                 setBlogTag(data.tag_name)
@@ -32,11 +37,11 @@ const BlogDetail = () => {
 
     return (
 
-        <div className="row justify-content-center">
+        <div className="">
 
             <h1 className="display-3 m-3 text-center">👋 BlogDetail Blog ID#:  {blog.blog_id}! </h1>
 
-            <div className="container">
+            <div className=" row justify-content-center">
                 <div className="card col-12 col-md-6 shadow-lg m-3">
 
                     <div className="card-header">
@@ -57,17 +62,24 @@ const BlogDetail = () => {
                     </div>
 
                     <div className="card-footer">
-                        📧 Please send all paypal donations to the author @ {blog.a_email} 😉
+                        Like the content? Feel free to donate below if you've enjoyed the blog. Your support is appreciated!🙏
 
                         <footer className=" m-2 blockquote-footer"> {blog.blog_created} </footer>
 
                         <div>
-                            <div onClick={goBack} className="btn mx-2 btn-primary">
+                            <div onClick={() => navigate(-1)} className="btn mx-2 btn-primary">
                                 Go Back?
                             </div>
+                            <Link to={`/donate`} className="btn mx-2 btn-success">
+                                Donate Now
+                            </Link>
+
                             <Link to={`/blogs/${blog_id}/edit`} className="btn mx-2 btn-warning">
                                 Edit?
                             </Link>
+
+
+
                         </div>
                     </div>
 

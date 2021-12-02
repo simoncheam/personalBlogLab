@@ -1,5 +1,7 @@
 import {TalkToMySQL} from "../index";
 import {Blogs, BlogTags, BlogTagsJoined} from "../../types";
+import { MysqlResponse } from "../models";
+
 
 // const get_all = () => TalkToMySQL<BlogTagsJoined[]>
 // (`CALL spGetAllBlogsJoined()`);
@@ -26,7 +28,7 @@ const get_one_by_id = (id:number)=>TalkToMySQL<BlogTagsJoined[]>
 */
 
 // NEW Stored Procedure:
-const get_one_by_id = (id:number)=>TalkToMySQL<BlogTagsJoined[]>
+const get_one_by_id = (id:number)=>TalkToMySQL<[BlogTagsJoined[], MysqlResponse]>
 (`CALL spGetBlogById(?) `,[id]);
 
 // NOTES:  FROM MYSQL - SP creation:
@@ -68,9 +70,15 @@ const create = (new_blog: Blogs) => {
    return TalkToMySQL(`INSERT INTO Blogs SET ?`, [new_blog]); 
 }
 
-const update = (blog: Blogs, id: Blogs['id'])=>TalkToMySQL("UPDATE Blogs SET ? WHERE id=?", [blog, id]);
+// original
+// const update = (blog: Blogs, id: Blogs['id'])=>TalkToMySQL("UPDATE Blogs SET ? WHERE id=?", [blog, id]);
 
-const destroy = (id: Blogs['id'])=> TalkToMySQL("DELETE FROM Blogs WHERE id=?", [id]);
+// updated with authorid filter
+const update = (blog: Blogs, id: Blogs['id'], authorid: number)=>TalkToMySQL("UPDATE Blogs SET ? WHERE id=? AND authorid =?", [blog, id, authorid]);
+
+
+
+const destroy = (id: Blogs['id'], authorid: number )=> TalkToMySQL("DELETE FROM Blogs WHERE id=? AND authorid = ?", [id, authorid]);
 
 
 

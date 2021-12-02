@@ -1,21 +1,17 @@
 import * as React from 'react';
-
 import { useState, useEffect, useRef } from 'react';
-import { useParams, useHistory, Link } from "react-router-dom";
-import { Blogs, Authors, Tags } from '../client_types'
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { Tags } from '../client_types'
+import { APIService } from '../services/APIService';
 
 //import client types
-
 
 const CreateTag = () => {
 
     const pizza = useRef(null);
-
-    const { goBack } = useHistory();
-    const hist = useHistory();
+    let navigate = useNavigate();
 
     // set author state
-
     const [tags, setTags] = useState<Tags[]>([]);
     const [new_tag_name, setNewTag_name] = useState("");
 
@@ -24,38 +20,26 @@ const CreateTag = () => {
 
         if (!new_tag_name) return alert('Fill out the god damn fields!')
 
-        //Question: what is the best way to alert user of duplicate entry attempt?
+        //Question: what is the best way to alert user of duplicate entry attempt? 500=>check entry?
         //the table Tag name is unique so it does not allow it
 
-
-        fetch("/api/tags", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ 
-                name: new_tag_name 
-            })
+        //@ts-ignore
+        APIService(`/api/tags`, 'POST', {
+            name: new_tag_name
         })
-            .then(res => res.json())
             .then(data => {
-                hist.push(`/create`)
+                navigate(`/create`)
             })
-            .catch(these_hands => {
-                console.log(these_hands)
+            .catch(e => {
+                console.log(e)
             })
     };
-
     //useEffect
     useEffect(() => {
-
-        fetch('/api/tags')
-            .then(res => res.json())
+        APIService('/api/tags')
             .then(t => setTags(t))
             .catch(e => console.log(e))
     }, []);
-
-
 
     return (
         <>
@@ -93,12 +77,7 @@ const CreateTag = () => {
                                 pizza.current.scrollIntoView(); //this focuses text field if scroll view alignment is off
 
                             }} />
-
-
                         <button onClick={handleSubmitButton} className="btn btn-primary m-2 shadow ">Click to Create a New Tag!</button>
-
-
-
                     </div>
                 </div>
             </div>
