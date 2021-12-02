@@ -22,6 +22,10 @@ export function tokenCheck(req: ReqUser, res: Response, next: NextFunction) {
         if (!user) { // edge case if token is good but user does not exist
 
             return res.redirect('/login')  // this works
+
+            //update to this? review 12/1 review
+            //return  res.status(403).json({ message: "invalid OR userid does not match author id!"})
+            // 
         }
 
         if (user) {

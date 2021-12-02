@@ -53,7 +53,7 @@ const App = () => {
 					{/* Private Route */}
 
 					{/* Outer wrapper is path to element  */}
-					{/* @ts-ignore */}
+					
 					<Route path="/private" element={<PrivateRoute />}>
 						{/* <Route index element={<h1>Secret Page</h1>}	/> */}
 						<Route path="secret1" element={<SecretPage1 />} />

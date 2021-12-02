@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { APIService, TOKEN_KEY } from '../services/APIService';
 
+// need to import private button panel
 
 // need to clarify meaning of "...rest" not used here// not needed except when we have other props
 
@@ -38,7 +39,7 @@ const PrivateRoute = ({ children, ...rest }: PrivateRouteProps) => {
                 setIsAuthed(tokenStatus)
                 setLoaded(true);
                 //console.log('APIservice then chain should work!');
-                return;
+                
             })
             .catch(e => {
                 console.log('Your token is bad!');
@@ -54,7 +55,7 @@ const PrivateRoute = ({ children, ...rest }: PrivateRouteProps) => {
     // is there a token? if not=> send to login
     if (!isAuthed) {
         console.log('not logged in!');
-        return navigate(`/login`)
+        navigate(`/login`)
 
     } else {
         return (
@@ -82,9 +83,9 @@ const PrivateRoute = ({ children, ...rest }: PrivateRouteProps) => {
 }
 
 interface PrivateRouteProps {
-    path: string;
+    path?: string;
     exact?: boolean;
-    children: React.ReactNode;
+    children?: React.ReactNode;
 }
 
 
