@@ -25,6 +25,7 @@ import OtherSecret from './views/OtherSecret';
 import SecretPage1 from './views/SecretPage1';
 import SecretPage2 from './views/SecretPage2';
 import CoolStuff from './views/CoolStuff';
+import Private from './views/Private';
 
 
 const stripe = loadStripe('pk_test_51JrmRQKRuAnoTcjnMIgGXWelfVNUongEu9Ja2mkoFoIJseO0x7AsD9PqIkk3IjnDrjj7z67fKPzrhlBqsANseyi700PDjNRoox');
@@ -53,12 +54,13 @@ const App = () => {
 					{/* Private Route */}
 
 					{/* Outer wrapper is path to element  */}
-					
+
 					<Route path="/private" element={<PrivateRoute />}>
-						{/* <Route index element={<h1>Secret Page</h1>}	/> */}
-						<Route path="secret1" element={<SecretPage1 />} />
-						<Route path="vip" element={<OptIn />} />
-						<Route path="users" element={<AuthorOverview />} />
+						{/* private has button panels */}
+						<Route index element={<Private />} /> 
+							<Route path="secret1" element={<SecretPage1 />} />
+							<Route path="vip" element={<OptIn />} />
+							<Route path="users" element={<AuthorOverview />} />
 
 
 					</Route>
@@ -69,7 +71,7 @@ const App = () => {
 					</Route> */}
 
 					{/* login */}
-					<Route path="/cool" element={<CoolStuff/>}>
+					<Route path="/cool" element={<CoolStuff />}>
 
 					</Route>
 

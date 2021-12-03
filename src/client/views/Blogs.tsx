@@ -1,11 +1,17 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link, useLocation } from "react-router-dom";
 import { Blogs, BlogTagsJoined } from '../client_types'
 import { APIService } from '../services/APIService';
 
 
 const Blogs = () => {
+
+    let nav = useNavigate();
+    const [isAuthed, setIsAuthed] = useState(null);
+    const loc = useLocation()
+
+
 
     const [blogs, setBlogs] = useState<Blogs[]>([]);
 
@@ -20,7 +26,22 @@ const Blogs = () => {
             .catch(error => {
                 console.log(error);
             });
-    }, [])
+
+        APIService(`/auth/validate`)
+            .then(res => {
+                const tokenStatus = res.one_author ? true : false;
+                setIsAuthed(tokenStatus)
+            })
+            .catch(e => {
+                setIsAuthed(false)
+                console.log('Your token is bad!');
+                console.log(e);
+            })
+
+
+
+
+    }, [loc.pathname])
     if (!blogs) {
         return <h1>LOADING...</h1>
     }
@@ -32,8 +53,21 @@ const Blogs = () => {
 
             <div className="row mt-5 justify-content-center">
 
+                {isAuthed && (
                     <h1 className="display-3 m-3 text-center">👋 Welcome To The Ultimate Blog!</h1>
-                    <h2 className="display-4 m-2 text-center" >Your Source for Infinite Wisdom and Truth</h2>
+                )}
+
+                {isAuthed && (
+                    <h2 className="display-4 m-2 text-center" >Your Source of Infinite Truth</h2>
+                )}
+
+                {!isAuthed && (
+                    <h4 className="display-6 m-2 text-center" >Log In Now for Exclusive Member Access!</h4>
+                )}
+
+
+
+
 
                 <div className="">
                     {blogs.reverse().map(blog => (
