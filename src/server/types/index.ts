@@ -46,7 +46,6 @@ export interface Blogs {
 }
 
 export interface BlogTags {
-    
     blogid: Blogs["id"];
     tagid: number   
 }

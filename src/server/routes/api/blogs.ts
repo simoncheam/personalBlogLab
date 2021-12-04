@@ -203,9 +203,6 @@ router.delete('/:id', tokenCheck, async (req: ReqUser, res) => {
 
     }
 
-
-
-
     try {
 
         // we need to delete: 
