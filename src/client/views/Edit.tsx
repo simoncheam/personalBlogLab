@@ -139,7 +139,7 @@ const Edit = () => {
 
     return (
         <>
-            <h1 className="display-3 m-3 text-center">👋 Hey, {author}, Edit Your Blog! </h1>
+            <h1 className="display-3 m-3 text-center">👋 Hey, {author}, Edit Your Blog!📝 </h1>
 
             <div className="row mt-5 justify-content-center">
                 <div className="form-group col-6">
