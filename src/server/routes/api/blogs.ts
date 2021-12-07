@@ -141,8 +141,14 @@ router.put('/:id', tokenCheck, async (req: ReqUser, res) => {
     const blog_id = req.params.id;
     const [one_blog] = (await blogz.get_one_by_id(Number(blog_id)))[0]; //grab item at index pos 0
 
+    console.log(one_blog);
+
     const { a_id } = one_blog;
     let blog_authorid = a_id;
+
+    console.log(`blog_authorid from one_blog: ${blog_authorid} `);
+    console.log(`authorid from req.user: ${authorid}`);
+
 
 
     if (authorid != blog_authorid){
