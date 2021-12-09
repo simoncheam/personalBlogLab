@@ -32,7 +32,8 @@ router.post('/', async (req, res) =>{
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Fuck me running!', error})
+        
+        res.status(500).json({ message: "A server errors occurred", error});
         
     }
 })

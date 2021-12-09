@@ -46,7 +46,7 @@ const Create = () => {
         console.log(token);
 
         //input val
-        if (!blog_content || !blog_title || !selectedTagId) return alert('🤬 Fill out the god damn fields please:)')
+        if (!blog_content || !blog_title || !selectedTagId) return alert('🤬 Fill out the fields please:)')
 
         //@ts-ignore
         APIService('/api/blogs', 'POST', {

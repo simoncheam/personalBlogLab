@@ -7,13 +7,7 @@ import { ReqUser } from '../types';
 //check if user matches authorid before CRUD op
 export async function authorCheck  (req: ReqUser, res: Response, next: NextFunction) {
 
-    // const TOKEN_KEY = 'token';
-    // const token = localStorage.getItem(TOKEN_KEY);
-    // console.log(`fucking token: ${token}`);
     
-    //Need to compare:
-    // req.user.id
-    //blogs.authorid
     try {
         const blog_id = req.params.id;
         console.log(`Blog ID is : ${blog_id}`); //this works

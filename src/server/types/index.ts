@@ -7,7 +7,7 @@ import {AuthorsTable} from '../database/models';
 
 export interface ReqUser extends Request {
     user?: AuthorsTable | JwtPayload;
-    userid?: number // Q: Is this necessary? getting a TS error in authorcheck mw
+    userid?: number 
 }
 
 export interface Payload extends AuthorsTable {

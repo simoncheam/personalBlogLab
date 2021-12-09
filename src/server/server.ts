@@ -5,15 +5,13 @@ import {configurePassport} from '../server/middlewares/passport-strats.mw'
 import * as passport from 'passport';
 const app = express();
 
-const cool = require('cool-ascii-faces');
 
-configurePassport(app); // !import mw function - TS side effect
-
+configurePassport(app); 
 
 
 app.use(passport.initialize());
 
-//app.use(cors());
+
 app.use(express.json());
 
 app.get('/status', (req,res)=> res.sendStatus(200));
@@ -26,12 +24,6 @@ app.get('*', (req,res) =>{ res.sendFile(path.join(__dirname, '../public/index.ht
 
 });
 
-//heroku testing
-app
-.set('views', path.join(__dirname, 'views'))
-.set('view engine', 'ejs')
-.get('/', (req, res) => res.render('pages/index'))
-.get('/cool', (req, res) => res.send(cool()))
 
 
 const port = process.env.PORT || 3000;

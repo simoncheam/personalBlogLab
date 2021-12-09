@@ -21,7 +21,7 @@ router.post('/', passport.authenticate('local'), async ( req: ReqUser, res) =>{
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Fuckin login broke!', error }) 
+        res.status(500).json({ message: 'login broke!', error }) 
     }
 
 })

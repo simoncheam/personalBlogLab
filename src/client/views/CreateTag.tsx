@@ -18,7 +18,7 @@ const CreateTag = () => {
     const handleSubmitButton = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        if (!new_tag_name) return alert('Fill out the god damn fields!')
+        if (!new_tag_name) return alert('Fill out the fields!')
 
         //Question: what is the best way to alert user of duplicate entry attempt? 500=>check entry?
         //the table Tag name is unique so it does not allow it

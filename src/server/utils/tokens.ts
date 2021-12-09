@@ -6,3 +6,4 @@ export const create_token = (payload: {[key:string]: string | number}) => {
         {expiresIn: jwt_config.expiration})
         return token;
 }
+

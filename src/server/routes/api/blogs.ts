@@ -143,6 +143,7 @@ router.put('/:id', tokenCheck, async (req: ReqUser, res) => {
 
     console.log(one_blog);
 
+    /// FIX THIS!
     const { a_id } = one_blog;
     let blog_authorid = a_id;
 
@@ -196,6 +197,7 @@ router.delete('/:id', tokenCheck, async (req: ReqUser, res) => {
 
     //define authorid by req.user
     const authorid = req.user.userid;
+    try {
 
     //define blog authorid by blog query
     const blog_id = req.params.id;
@@ -209,7 +211,6 @@ router.delete('/:id', tokenCheck, async (req: ReqUser, res) => {
 
     }
 
-    try {
 
         // we need to delete: 
 

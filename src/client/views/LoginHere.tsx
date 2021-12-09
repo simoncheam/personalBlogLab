@@ -13,7 +13,7 @@ const LoginHere = (props: LoginProps) => {
         e.preventDefault();
 
         if (!email || password == null)
-            return alert('🤬 Fill out the god damn fields!🤦🏻‍♂️');
+            return alert('🤬 Fill out the fields!🤦🏻‍♂️');
         //@ts-ignore
         APIService('/auth/login',  'POST', {email, password})
 
