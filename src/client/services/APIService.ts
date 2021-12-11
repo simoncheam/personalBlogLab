@@ -1,6 +1,6 @@
 export const TOKEN_KEY = 'token';
 
-export async function APIService<T = any>(uri: string, method: string = 'GET', data?: null) {
+export async function APIService<T = any>(uri?: string, method: string = 'GET', data?: {}) {
 
     const TOKEN = localStorage.getItem(TOKEN_KEY);
 

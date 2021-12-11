@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useParams,  Link, useNavigate } from "react-router-dom";
 import { APIService, TOKEN_KEY } from '../services/APIService';
 
-const LoginHere = (props: LoginProps) => {
+const LoginHere = (props: LoginProps, ) => {
     let navigate = useNavigate();
 
     const [email, setEmail] = useState<string>('');
@@ -14,22 +14,10 @@ const LoginHere = (props: LoginProps) => {
 
         if (!email || password == null)
             return alert('🤬 Fill out the fields!🤦🏻‍♂️');
-        //@ts-ignore
+        
         APIService('/auth/login',  'POST', {email, password})
 
-        //Q: why did we remove this part? Res.ok check is inside APIService?
-
-            // .then(res =>{
-
-            //     if(!res.ok) {
-            //         alert('not authorized!')
-            //         return navigate(`/login`);
-
-            //     }
-
-            //     return res.json()
-            // } 
-            //     )
+       
             .then(data => {
                 localStorage.setItem('token', data.token)
                 //localStorage.setItem(TOKEN_KEY, token)

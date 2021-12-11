@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link, useLocation } from "react-router-dom";
-import { Blogs, BlogTagsJoined } from '../client_types'
+import { Blogs } from '../client_types'
 import { APIService } from '../services/APIService';
 
 
@@ -84,7 +84,7 @@ const Blogs = () => {
 
                                     <Link to={`/blogs/${blog.id}/`} className="btn mx-2 btn-primary">
                                         Read More
-                    </Link>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

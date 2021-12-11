@@ -4,7 +4,7 @@ import { useRoutes } from 'react-router-dom';
 import Blogs from './views/Blogs';
 import Create from './views/Create';
 import Browse from './views/Browse';
-import NotFound from './views/NotFound';
+import NotFound from './views/NotFound'; 
 import Navbar from './components/Navbar';
 import Register from './views/Register';
 import BlogDetail from './views/BlogDetail';
@@ -61,21 +61,10 @@ const App = () => {
 							<Route path="secret1" element={<SecretPage1 />} />
 							<Route path="vip" element={<OptIn />} />
 							<Route path="users" element={<AuthorOverview />} />
-
-
 					</Route>
 
-					{/* VIP moved to private route */}
-					{/* <Route path="/vip" element={<OptIn />}>
-
-					</Route> */}
-
-					{/* login */}
-					<Route path="/cool" element={<CoolStuff />}>
-
-					</Route>
-
-
+					
+					
 					{/* login */}
 					<Route path="/login" element={<LoginHere />}>
 
@@ -145,9 +134,7 @@ const App = () => {
 					</Route>
 
 					{/* NotFound */}
-					<Route path="*" element={<NotFound />}>
-
-					</Route>
+					<Route path="*" element={<NotFound />}></Route>
 
 
 
