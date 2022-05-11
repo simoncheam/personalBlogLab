@@ -14,11 +14,10 @@ router.get('/', tokenCheck, async (req: ReqUser, res) => {
 
     const id = req.user.userid;
     //const {name} = req.user.name;
-    console.log(Number(id));
+    //console.log(Number(id));
 
 
     try {
-        console.log('AUTH VALIDATION - TRY BLOCK');
 
         const [one_author] = await authorz.get_one_by_id(Number(id));
         delete one_author.password;

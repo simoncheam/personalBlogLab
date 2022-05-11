@@ -1,7 +1,6 @@
-
 import * as React from 'react';
 //import {  Route } from 'react-router';
-import { Route, Outlet, Navigate, useNavigate } from 'react-router-dom'
+import { Route, Outlet, Navigate, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { APIService, TOKEN_KEY } from '../services/APIService';
@@ -10,83 +9,57 @@ import { APIService, TOKEN_KEY } from '../services/APIService';
 
 // need to clarify meaning of "...rest" not used here// not needed except when we have other props
 
-const PrivateRoute = ({ children}: PrivateRouteProps) => {
+const PrivateRoute = ({ children }: PrivateRouteProps) => {
+  let navigate = useNavigate();
 
+  const [loaded, setLoaded] = useState(false);
+  const [isAuthed, setIsAuthed] = useState(null);
 
-    let navigate = useNavigate();
+  useEffect(() => {
+    const TOKEN = localStorage.getItem(TOKEN_KEY);
+    console.log(TOKEN);
 
-
-    const [loaded, setLoaded] = useState(false);
-    const [isAuthed, setIsAuthed] = useState(null);
-
-
-    useEffect(() => {
-
-        const TOKEN = localStorage.getItem(TOKEN_KEY);
-        console.log(TOKEN);
-        
-
-        if (!TOKEN) {
-            navigate(`/login`)
-        } else {
-            APIService(`/auth/validate`)
-                .then(res => {
-                    console.log(res.one_author);
-
-                    const tokenStatus = res.one_author ? true : false;
-
-
-                    setIsAuthed(tokenStatus)
-                    setLoaded(true);
-                    //console.log('APIservice then chain should work!');
-
-                })
-                .catch(e => {
-                    console.log('Your token is bad!');
-                    console.log(e);
-                    navigate(`/login`)
-                })
-        }
-
-    }, [])
-
-    if (!loaded) return <></>;
-
-    // is there a token? if not=> send to login
-    if (!isAuthed) {
-        console.log('not logged in!');
-        navigate(`/login`)
-
+    if (!TOKEN) {
+      navigate(`/login`);
     } else {
-        return (
-            <>
-                {/* <div>
-                    <h1 className="text-center display-1">You are on a PrivateRoute!</h1>
-                </div>
-                <div className="mt-5 justify-content-center">
+      APIService(`/auth/validate`)
+        .then((res) => {
+          console.log(res.one_author);
 
-                    <Link to={`/private/secret1/`} className="btn mx-2 btn-primary">Secret 1</Link>
+          const tokenStatus = res.one_author ? true : false;
 
-                    <Link to={`/private/vip/`} className="btn mx-2 btn-success">VIP ACCESS </Link>
-
-                    <Link to={`/private/users/`} className="btn mx-2 btn-warning">Member Directory </Link>
-                </div> */}
-
-
-                {children}
-                <Outlet />
-            </>
-        );
+          setIsAuthed(tokenStatus);
+          setLoaded(true);
+          //console.log('APIservice then chain should work!');
+        })
+        .catch((e) => {
+          console.log('Your token is bad!');
+          console.log(e);
+          navigate(`/login`);
+        });
     }
+  }, []);
 
-}
+  if (!loaded) return <></>;
+
+  // is there a token? if not=> send to login
+  if (!isAuthed) {
+    console.log('not logged in!');
+    navigate(`/login`);
+  } else {
+    return (
+      <>
+        {children}
+        <Outlet />
+      </>
+    );
+  }
+};
 
 interface PrivateRouteProps {
-    path?: string;
-    exact?: boolean;
-    children?: React.ReactNode;
+  path?: string;
+  exact?: boolean;
+  children?: React.ReactNode;
 }
 
-
-
-export default PrivateRoute
+export default PrivateRoute;

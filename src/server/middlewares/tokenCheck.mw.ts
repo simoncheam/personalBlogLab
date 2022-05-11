@@ -23,16 +23,14 @@ export function tokenCheck(req: ReqUser, res: Response, next: NextFunction) {
 
             return res.redirect('/login')  // this works
 
-            //update to this? review 12/1 review
-            //return  res.status(403).json({ message: "invalid OR userid does not match author id!"})
-            // 
+
         }
 
         if (user) {
-            console.log('TOKEN IS GOOD!');
+            //  console.log('TOKEN IS GOOD!');
             req.user = user;
             delete req.user.password;
-            
+
         }
         next();
     })(req, res, next);
