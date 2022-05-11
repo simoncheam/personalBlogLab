@@ -35,7 +35,6 @@ const Blogs = () => {
     return <h1>LOADING...</h1>;
   }
 
-  console.log(blogs);
 
   return (
     <>

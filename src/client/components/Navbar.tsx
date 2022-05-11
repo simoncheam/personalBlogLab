@@ -21,6 +21,25 @@ const Navbar = () => {
       });
   }, [loc.pathname]);
 
+  useEffect(() => {
+    var style2 = [
+      'background: linear-gradient(#E36C4E, #19272f)',
+      'border: 1px solid #E36C4E',
+      'color: white',
+      'padding: 1px 5px',
+      'display: block',
+      'line-height: 40px',
+      'text-align: center',
+      'font-weight: bold',
+      'font-size: large',
+    ].join(';');
+    console.log(
+      "%cIf you like what you see...I'd love to help you to take your software, team, or company to the next level.",
+      style2
+    );
+    console.log("%cLet's chat >>> simon@simoncheam.dev", style2);
+  }, []);
+
   return (
     <div className="bg-dark">
       <Link type="button" className="m-2 btn btn-outline-primary" to="/">
