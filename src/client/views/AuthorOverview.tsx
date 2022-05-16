@@ -57,9 +57,9 @@ const AuthorOverview = () => {
             ))}
           </ul>
           <div className=" row justify-content-center">
-            <Link to={`/createAuthor`} className=" btn m-2 btn-success ">
+            {/* <Link to={`/register`} className=" btn m-2 btn-success ">
               Click Here To Get Started Today!
-            </Link>
+            </Link> */}
           </div>
           <div onClick={() => navigate(-1)} className="btn mt-2 btn-danger">
             Go Back?
